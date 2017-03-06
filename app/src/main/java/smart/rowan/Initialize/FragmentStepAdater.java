@@ -1,7 +1,6 @@
 package smart.rowan.Initialize;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -11,12 +10,8 @@ import com.stepstone.stepper.Step;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
 
-import smart.rowan.Initialize.StepFragment;
 import smart.rowan.R;
 
-/**
- * Created by charlie on 2017. 2. 20..
- */
 
 public class FragmentStepAdater extends AbstractFragmentStepAdapter {
 
@@ -46,10 +41,6 @@ public class FragmentStepAdater extends AbstractFragmentStepAdapter {
                         .setTitle("default")
                         .create();
         }
-        /*
-        return new StepViewModel.Builder(context)
-                .setTitle("Tab title")
-                .create();*/
     }
 
 

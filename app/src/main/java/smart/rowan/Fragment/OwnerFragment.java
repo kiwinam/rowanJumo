@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 
 import smart.rowan.R;
 import smart.rowan.RestAuthentication;
@@ -23,9 +21,7 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
     String restId, restName, restPhone, restAddress, userId, firstName, lastName, position;
     FragmentOwnerBinding ownerBinding;
 
-    public OwnerFragment() {
-        // Required empty public constructor
-    }
+    public OwnerFragment() {}
 
 
     @Override
@@ -76,11 +72,6 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
             focusView.requestFocus();
         } else {
             String method = "create";
-//            Intent intent = new Intent(this, HomeActivity.class);
-//            intent.putExtra("uid", user_id);
-//            intent.putExtra("firstName", full_name);
-//            intent.putExtra("lastName", last_name);
-//            this.startActivity(intent);
             RestAuthentication restAuthentication = new RestAuthentication(getContext());
             restAuthentication.execute(method, restId, restName, restPhone, restAddress, userId);
         }

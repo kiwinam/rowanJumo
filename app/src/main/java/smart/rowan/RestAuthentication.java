@@ -20,11 +20,11 @@ import java.util.Calendar;
 
 public class RestAuthentication extends AsyncTask<String, Void, String> {
 
-    String result = "SUCCESS";
-    Context context;
-    Activity activity;
+    private String result = "SUCCESS";
+    private Context context;
+    private Activity activity;
     private ProgressDialog progressBar;
-    String restId, restName, restPhone, restAddress, registeredDate, userId, position;
+    private String restId, userId, position;
 
     public RestAuthentication(Context ctx) {
         this.context = ctx;
@@ -59,14 +59,13 @@ public class RestAuthentication extends AsyncTask<String, Void, String> {
                 publishProgress();
 
                 restId = param[1];
-                restName = param[2];
-                restPhone = param[3];
-                restAddress = param[4];
-                registeredDate = df.format(c.getTime());
-                // personal information to pass Homeactivity
+                String restName = param[2];
+                String restPhone = param[3];
+                String restAddress = param[4];
+                String registeredDate = df.format(c.getTime());
                 userId = param[5];
 
-                String rest_link = "http://165.132.110.130/rowan/create_rest.php";
+                String rest_link = activity.getString(R.string.create_rest);
                 String data = URLEncoder.encode("restid", "UTF-8") + "=" + URLEncoder.encode(restId, "UTF-8") + "&" +
                         URLEncoder.encode("restname", "UTF-8") + "=" + URLEncoder.encode(restName, "UTF-8") + "&" +
                         URLEncoder.encode("restphone", "UTF-8") + "=" + URLEncoder.encode(restPhone, "UTF-8") + "&" +
@@ -110,7 +109,7 @@ public class RestAuthentication extends AsyncTask<String, Void, String> {
                 restId = param[1];
                 userId = param[2];
 
-                String link = "http://165.132.110.130/rowan/join_rest.php";
+                String link = activity.getString(R.string.join_rest);
                 String data = URLEncoder.encode("joinrestid", "UTF-8") + "=" + URLEncoder.encode(restId, "UTF-8") + "&" +
                         URLEncoder.encode("joinuserid", "UTF-8") + "=" + URLEncoder.encode(userId, "UTF-8");
 

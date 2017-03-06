@@ -21,7 +21,7 @@ public class MethodClass {
         return hashMap;
     }
 
-    public static HashMap<String, Long> changeStringToHashMap2(String hashString) {
+    static HashMap<String, Long> changeStringToHashMap2(String hashString) {
         HashMap<String, Long> hashMap;
         Gson gson = new Gson();
         Type type = new TypeToken<HashMap<String, Long>>() {
@@ -31,7 +31,7 @@ public class MethodClass {
     }
 
     //check email pattern
-    public static boolean isEmail(String email) {
+    static boolean isEmail(String email) {
         boolean isEmail;
         if (email == null) return false;
         isEmail = Pattern.matches(

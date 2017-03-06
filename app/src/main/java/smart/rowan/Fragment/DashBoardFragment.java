@@ -2,8 +2,8 @@ package smart.rowan.Fragment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,13 +22,11 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.concurrent.ExecutionException;
 
 import smart.rowan.HomeActivity;
 import smart.rowan.R;
@@ -64,20 +62,23 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
 
     private void setPeakTimeText(TextView peakTimeTextView, String peakTime, TextView peakTimeCountTextView, int count) {
         peakTimeTextView.setText(peakTime);
-        peakTimeCountTextView.setText(String.valueOf(count) + " called");
+        String called = String.valueOf(count) + " called";
+        peakTimeCountTextView.setText(called);
         peakTimeTextView.setVisibility(View.VISIBLE);
         peakTimeCountTextView.setVisibility(View.VISIBLE);
     }
 
     private void setTableCountText(TextView tableNumberTextView, String peakTime, TextView callCountTextView, int count) {
-        tableNumberTextView.setText("Number " + peakTime);
-        callCountTextView.setText(String.valueOf(count) + "called");
+        String called = String.valueOf(count) + "called";
+        String peakTimes = "Number " + peakTime;
+        tableNumberTextView.setText(peakTimes);
+        callCountTextView.setText(called);
         tableNumberTextView.setVisibility(View.VISIBLE);
         callCountTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onDateSelected(MaterialCalendarView widget, @Nullable CalendarDay date, boolean selected) {
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @Nullable CalendarDay date, boolean selected) {
         String time = "";
         ArrayList<Entry> pieEntries = new ArrayList<>();
         String pkg = getActivity().getPackageName();
@@ -126,8 +127,8 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
                 }
 
             }
-
-            mDashboardBinding.dashAverageTime.setText(time + " sec");
+            String sec = time + "sec";
+            mDashboardBinding.dashAverageTime.setText(sec);
 
             PieDataSet pieDataSet = new PieDataSet(pieEntries, "Pick time");
             pieDataSet.setColors(new int[]{R.color.chart1, R.color.chart2, R.color.chart3, R.color.chart4, R.color.chart5}, this.getContext());
@@ -138,11 +139,7 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
             mDashboardBinding.pieChart.setDescriptionTextSize(30);
             mDashboardBinding.pieChart.setDescription(getSelectedDatesString());
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

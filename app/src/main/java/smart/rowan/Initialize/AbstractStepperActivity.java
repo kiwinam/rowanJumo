@@ -12,9 +12,6 @@ import com.stepstone.stepper.VerificationError;
 
 import smart.rowan.R;
 
-/**
- * Created by charlie on 2017. 2. 20..
- */
 public abstract class AbstractStepperActivity extends AppCompatActivity implements StepperLayout.StepperListener,
         OnNavigationBarListener {
 

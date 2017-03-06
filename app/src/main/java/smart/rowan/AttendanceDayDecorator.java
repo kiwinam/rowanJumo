@@ -8,8 +8,8 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
 
 public class AttendanceDayDecorator implements DayViewDecorator {
-    CalendarDay currentDay;
-    Activity activity;
+    private CalendarDay currentDay;
+    private Activity activity;
 
     public AttendanceDayDecorator(Activity activity, CalendarDay date) {
         this.activity = activity;

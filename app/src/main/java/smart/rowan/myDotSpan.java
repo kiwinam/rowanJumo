@@ -1,19 +1,13 @@
 package smart.rowan;
 
-/**
- * Created by charlie on 2017. 2. 15..
- */
-
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.style.LineBackgroundSpan;
 
-/**
- * Span to draw a dot centered under a section of text
- */
+
 public class myDotSpan implements LineBackgroundSpan {
 
-    public static final float DEFAULT_RADIUS = 3;
+    static final float DEFAULT_RADIUS = 3;
 
     private final float radius;
     private final int color;

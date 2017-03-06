@@ -10,7 +10,6 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +70,6 @@ public class EmployerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
-            //       Log.d("주인장 서비스 시작됨", "true");
             myData = getSharedPreferences("SharedData", Context.MODE_PRIVATE);
             inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             toast = new Toast(getApplicationContext());
@@ -81,6 +79,7 @@ public class EmployerService extends Service {
 
             databaseReference.addValueEventListener(parentListener);
         } catch (Exception e) {
+            Toast.makeText(this, "Temporary Exception occurred!",Toast.LENGTH_SHORT).show();
         }
         return START_STICKY;
     }
@@ -89,10 +88,8 @@ public class EmployerService extends Service {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             parentCountMsg = dataSnapshot.getChildrenCount();
-            //  Log.e("parentCount", parentCountMsg + "");
             for (DataSnapshot receiveSnapShot : dataSnapshot.getChildren()) {
                 key = receiveSnapShot.getKey();
-                //  Log.d("key", key);
                 if (key.contains(mId)) {
                     databaseReference.child(key).limitToLast(30).addChildEventListener(childListener);
                 }
@@ -119,7 +116,6 @@ public class EmployerService extends Service {
                 messageMap = new HashMap<>();
             } else {
                 messageMap = MethodClass.changeStringToHashMap(hashString);
-                //  Log.d("serviceMessageMap", messageMap + "");
             }
             if (!senderName.equals(mId)) {
                 if (lastKey < oldKey && !senderName2.equals(senderName)) {
@@ -168,21 +164,9 @@ public class EmployerService extends Service {
                 }
             }
         }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-        }
+        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+        @Override public void onCancelled(DatabaseError databaseError) {}
     };
 }

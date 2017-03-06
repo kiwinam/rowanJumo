@@ -91,7 +91,7 @@ public class MyFragment extends Fragment {
         switch (requestCode) {
             case MULTIPLE_PERMISSIONS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //permission granted.
+                    Log.d("permission", "granted");
                 }
             }
         }
@@ -220,7 +220,7 @@ public class MyFragment extends Fragment {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                DoFileUpload("http://165.132.110.130/rowan/image_update.php", changed.toString());
+                                DoFileUpload(getActivity().getString(R.string.update), changed.toString());
                             }
                         }).start();
 
@@ -303,9 +303,7 @@ public class MyFragment extends Fragment {
             File sourceFile = new File(fileName);
             DataOutputStream dos;
             if (!sourceFile.isFile()) {
-
                 Log.e("uploadFile", "Source File not exist :" + fileName);
-
             } else {
                 FileInputStream mFileInputStream = new FileInputStream(sourceFile);
                 URL connectUrl = new URL(urlString);
@@ -326,16 +324,11 @@ public class MyFragment extends Fragment {
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\"" + fileName + "\"" + lineEnd);
                 dos.writeBytes(lineEnd);
-
                 int bytesAvailable = mFileInputStream.available();
                 int maxBufferSize = 1024 * 1024;
                 int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-
                 byte[] buffer = new byte[bufferSize];
                 int bytesRead = mFileInputStream.read(buffer, 0, bufferSize);
-
-                Log.d("Test", "image byte is " + bytesRead);
-
                 // read image
                 while (bytesRead > 0) {
                     dos.write(buffer, 0, bufferSize);
@@ -357,13 +350,6 @@ public class MyFragment extends Fragment {
                         stringBuffer.append(line);
                     }
                     Log.d("line", stringBuffer.toString());
-                    getActivity().runOnUiThread(new Runnable() {
-                        public void run() {
-                            String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-                                    + " http://www.androidexample.com/media/uploads/";
-                            Log.d("msg", msg);
-                        }
-                    });
                 }
                 Log.e("Test", "File is written");
                 mFileInputStream.close();

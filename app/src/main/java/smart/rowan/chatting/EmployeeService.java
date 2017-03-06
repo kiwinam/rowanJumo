@@ -11,7 +11,6 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +51,6 @@ public class EmployeeService extends Service {
         if (mNotificationManager != null) {
             mNotificationManager.cancelAll();
             mNotificationManager = null;
-            //  Log.d("service", "is down");
             if (key != null) {
                 for (int i = 0; i < 30; i++) {
                     databaseReference.child(key).removeEventListener(childEventListener);
@@ -79,12 +77,10 @@ public class EmployeeService extends Service {
             databaseReference = FirebaseDatabase.getInstance().getReference();
             sharedPreferences = getSharedPreferences("SharedData", Context.MODE_PRIVATE);
             count = sharedPreferences.getInt("countMsg", 0);
-            //  Log.d("service count", count + "");
             myEmail = sharedPreferences.getString("email", "noEmail").replace(".", "");
             String ownerEmail = sharedPreferences.getString("ownerEmail", null);
             ownerName = sharedPreferences.getString("ownerName", null);
             lastKey = sharedPreferences.getLong("last", 0L);
-            // Log.d("lastKey", lastKey+"");
             String[] sorts = {myEmail, ownerEmail};
             Arrays.sort(sorts);
             key = sorts[0] + "-" + sorts[1];
@@ -143,22 +139,10 @@ public class EmployeeService extends Service {
                 }
             }
         }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-        }
+        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
+        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+        @Override public void onCancelled(DatabaseError databaseError) {}
     };
 
 }

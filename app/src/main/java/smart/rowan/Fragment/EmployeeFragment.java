@@ -54,7 +54,7 @@ public class EmployeeFragment extends Fragment {
             isEF = true;
             mId = HomeActivity.sUser.getLastName() + " " + HomeActivity.sUser.getFirstName();
             employeeListView = (ListView) view.findViewById(R.id.employeeListView);
-            String strArray = new TaskMethod("http://165.132.110.130/rowan/employee.php",
+            String strArray = new TaskMethod(getActivity().getString(R.string.employee),
                     "res_id=" + HomeActivity.sRest.getRestId(), "UTF-8").execute().get();
             JSONArray jsonArray = new JSONArray(strArray);
             jsonArrays = jsonArray;

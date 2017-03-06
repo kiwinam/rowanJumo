@@ -1,13 +1,9 @@
 package smart.rowan;
 
-/**
- * Created by charlie on 2017. 2. 7..
- */
-
 public class RestaurantInformation {
     private String restId, restName, restAddress, restPhone;
 
-    public RestaurantInformation(String restId, String restName, String restAddress, String restPhone) {
+    RestaurantInformation(String restId, String restName, String restAddress, String restPhone) {
         this.restId = restId;
         this.restName = restName;
         this.restAddress = restAddress;

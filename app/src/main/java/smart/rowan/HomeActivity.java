@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         mFirstName = mydata.getString("firstName", "none");
         mOwnerEmail = mydata.getString("ownerEmail", null);
         try {
-            String result = new TaskMethod("http://165.132.110.130/rowan/home.php",
+            String result = new TaskMethod(activity.getString(R.string.home),
                     "usrid=" + mUserId, "UTF-8").execute().get();
             //Log.e("result", result);
             String[] val = result.split("/");
@@ -279,7 +279,7 @@ public class HomeActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
                 publishProgress();
-                String link = "http://165.132.110.130/rowan/employee.php";
+                String link = activity.getString(R.string.employee);
                 String data = URLEncoder.encode("res_id", "UTF-8") + "=" + URLEncoder.encode(restId, "UTF-8");
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

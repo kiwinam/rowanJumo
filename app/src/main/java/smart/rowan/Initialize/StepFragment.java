@@ -20,10 +20,6 @@ import com.stepstone.stepper.VerificationError;
 
 import smart.rowan.R;
 
-/**
- * Created by charlie on 2017. 2. 20..
- */
-
 public class StepFragment extends Fragment implements Step {
     private static final String CLICKS_KEY = "clicks";
 

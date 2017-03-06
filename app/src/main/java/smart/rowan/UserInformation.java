@@ -1,9 +1,5 @@
 package smart.rowan;
 
-/**
- * Created by charlie on 2017. 2. 7..
- */
-
 public class UserInformation {
     private String id, firstName, lastName, email, birthday, startDate, endDate, gender, phone, address, position;
 

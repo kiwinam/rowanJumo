@@ -25,9 +25,7 @@ public class WaiterFragment extends Fragment implements View.OnClickListener {
     String restId, userId, ss;
     FragmentWaiterBinding waiterBinding;
 
-    public WaiterFragment() {
-        // Required empty public constructor
-    }
+    public WaiterFragment() {}
 
 
     @Override
@@ -39,9 +37,6 @@ public class WaiterFragment extends Fragment implements View.OnClickListener {
         waiterBinding.joinRest.setOnClickListener(this);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         userId = sharedPreferences.getString("id", null);
-
-        System.out.println("*****" + userId + "+++++");
-
         return view;
     }
 

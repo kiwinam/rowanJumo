@@ -1,7 +1,6 @@
 package smart.rowan.chatting;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,10 @@ import smart.rowan.R;
 public class EmployeeAdapter extends BaseAdapter {
     private Vector<User> user;
     private LayoutInflater layoutInflater;
-    private SharedPreferences myData;
 
     public EmployeeAdapter(Context context, Vector<User> user, LayoutInflater layoutInflater) {
         this.user = user;
         this.layoutInflater = layoutInflater;
-        myData = context.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
     }
 
     private class ViewHolder {

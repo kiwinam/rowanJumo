@@ -28,6 +28,16 @@
     <string name="average_php">http://165.132.110.130/rowan/averageTime.php</string>
     <string name="average_test_jsp">http://creativerowan.com/test/getAverageTime.jsp</string>
     <string name="dashboard_php">http://165.132.110.130/rowan/dashboard.php</string>
+
+
+    <!-- connect URL -->
+    <string name="create_rest">http://165.132.110.130/rowan/create_rest.php</string>
+    <string name="join_rest">http://165.132.110.130/rowan/join_rest.php</string>
+    <string name="home">http://165.132.110.130/rowan/home.php</string>
+    <string name="employee">http://165.132.110.130/rowan/employee.php</string>
+    <string name="register">http://165.132.110.130/rowan/register.php</string>
+    <string name="update">http://165.132.110.130/rowan/image_update.php</string>
+    <!-- END -->
     <string name="table_served_information">Table served information</string>
     <string name="peak_time">Peak Time</string>
     <string name="please_select_day">Please Select Day</string>

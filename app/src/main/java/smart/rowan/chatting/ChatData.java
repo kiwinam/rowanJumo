@@ -9,10 +9,6 @@ public class ChatData {
     private String times;
     private String myName;
 
-    public ChatData() {
-
-    }
-
     public ChatData(String userName, String userName2, String message, String sendTime, String times, String myName) {
         this.userName = userName;
         this.userName2 = userName2;

@@ -48,10 +48,6 @@ public class Authentication extends AsyncTask<String, Void, String> {
 
     protected String doInBackground(String... param) {
         String method = param[0];
-        Log.d("METHOD  : ", param[0]);
-        Log.d("USER ID : ", param[1]);
-        Log.d("PASSWORD: ", param[2]);
-
         if (method.equals("login")) {
             try {
                 publishProgress();
@@ -78,23 +74,12 @@ public class Authentication extends AsyncTask<String, Void, String> {
                     //stringBuilder.append(line);
 
                     if (result.equals(line)) {
-                        Log.d("STATUS: ", line);
-
                         user_id = reader.readLine();
-                        Log.d("userid: ", user_id);
-
                         full_name = reader.readLine();
-                        Log.d("fullname: ", full_name);
-
-                        String last_name = reader.readLine();
-                        Log.d("lastName: ", last_name);
-
+                        reader.readLine();
                         position = reader.readLine();
-                        Log.d("poistion: ", position);
-
-                        String rest_id = reader.readLine();
+                        reader.readLine();
                         email = reader.readLine();
-                        Log.d("RestID: ", rest_id);
                     } else {
                         Log.d("FAILED: ", line);
                     }
@@ -111,21 +96,12 @@ public class Authentication extends AsyncTask<String, Void, String> {
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String registered_date = df.format(c.getTime());
-                Log.d("Time ", registered_date);
-
                 String first_name = param[1];
-                Log.d("first_name ", param[1]);
-
                 String last_name = param[2];
-                Log.d("lastName ", param[2]);
-
                 String email = param[3];
-                Log.d("email ", param[3]);
-
                 String password = param[4];
-                Log.d("password ", param[4]);
 
-                String link = "http://165.132.110.130/rowan/register.php";
+                String link = activity.getString(R.string.register);
                 String data = URLEncoder.encode("fname", "UTF-8") + "=" + URLEncoder.encode(first_name, "UTF-8") + "&" +
                         URLEncoder.encode("lname", "UTF-8") + "=" + URLEncoder.encode(last_name, "UTF-8") + "&" +
                         URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") + "&" +
