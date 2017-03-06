@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -41,6 +40,7 @@ import smart.rowan.chatting.EmployerService;
 
 public class HomeActivity extends AppCompatActivity {
     public static HomeActivity activity;
+    private String home = "home";
     String owner = "owner", waiter = "waiter", mFirstName;
     SharedPreferences mydata;
     SharedPreferences tmpData;
