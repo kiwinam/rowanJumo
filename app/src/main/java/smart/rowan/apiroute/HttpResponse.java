@@ -2,11 +2,8 @@ package smart.rowan.apiroute;
 
 import java.util.Map;
 
-/**
- * Created by BangRob on 2017. 2. 4..
- */
 
-public class HttpResponse {
+class HttpResponse {
     // the request url
     String url;
 

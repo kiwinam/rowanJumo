@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -40,7 +41,6 @@ import smart.rowan.chatting.EmployerService;
 
 public class HomeActivity extends AppCompatActivity {
     public static HomeActivity activity;
-    private String home = "home";
     String owner = "owner", waiter = "waiter", mFirstName;
     SharedPreferences mydata;
     SharedPreferences tmpData;
@@ -74,15 +74,15 @@ public class HomeActivity extends AppCompatActivity {
             //Log.e("result", result);
             String[] val = result.split("/");
                 /*firstName = val[1];lastName = val[2];email = val[3];birthday = val[4];startDate = val[5];
-                endDate = val[6];gender = val[7];phone = val[8];address = val[9];position = val[10];
-                image = val[11];wristId = val[12];restName = val[14];restAddress = val[15];restType = val[16];
-                String restSize = val[17];res_emp_num = val[18];res_device = val[19];restPhone = val[20];res_createDate = val[21];*/
+            endDate = val[6];gender = val[7];phone = val[8];address = val[9];position = val[10];
+            image = val[11];wristId = val[12];restName = val[14];restAddress = val[15];restType = val[16];
+            String restSize = val[17];res_emp_num = val[18];res_device = val[19];restPhone = val[20];res_createDate = val[21];*/
             //restaurant fragment data
             restId = val[13];
             sUser = new UserInformation(mUserId, val[1], val[2], val[3], val[4], val[5], val[6], val[7], val[8], val[9], val[10]);
             sRest = new RestaurantInformation(val[13], val[14], val[15], val[20]);
         } catch (Exception e) {
-
+            e.getMessage();
         }
         //Log.d(sRest.getRestName(), sRest.getRestId());
         tmpData = getSharedPreferences("tmpData", Context.MODE_PRIVATE);
@@ -244,7 +244,7 @@ public class HomeActivity extends AppCompatActivity {
             if (mPosition.equals(waiter)) {
                 if (!MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployeeService")) {
                     startService(new Intent(this, EmployeeService.class));
-                } else ;//Log.d("is start", "false");
+                } else Log.d("is start", "false");
 
             }
         } else {
