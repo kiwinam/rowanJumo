@@ -1,0 +1,212 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="smart.rowan.Fragment.DashBoardFragment">
+
+        <ScrollView
+            android:id="@+id/scrollChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:mcv_showOtherDates="all"
+                    app:mcv_firstDayOfWeek="monday"
+                    app:mcv_allowClickDaysOutsideCurrentMonth="true"
+                    app:mcv_calendarMode="week"
+                    android:layout_marginBottom="10dp" />
+
+                <include layout="@layout/item_divider" />
+
+                <TextView
+                    android:layout_margin="20dp"
+                    android:gravity="center"
+                    android:text="@string/dash_board_average"
+                    android:textSize="30sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/dashAverageTime"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:text="@string/please_select_day"
+                    android:textSize="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include layout="@layout/item_divider" />
+
+                <TextView
+                    android:layout_margin="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/peak_time"
+                    android:textSize="30sp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center_horizontal" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="40dp" />
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashPickTimeTv1"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashPickTimeCountTv1"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashPickTimeTv2"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashPickTimeCountTv2"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashPickTimeTv3"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashPickTimeCountTv3"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashPickTimeTv4"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashPickTimeCountTv4"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashPickTimeTv5"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashPickTimeCountTv5"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/table_served_information"
+                    android:textSize="30sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center_horizontal" />
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashTableNumberTv1"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashTableCountTv1"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashTableNumberTv2"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashTableCountTv2"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashTableNumberTv3"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashTableCountTv3"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/pickTimeLinearLayout">
+
+                    <TextView
+                        android:id="@+id/dashTableNumberTv4"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashTableCountTv4"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/pickTimeLinearLayout"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:id="@+id/dashTableNumberTv5"
+                        android:layout_weight="6"
+                        style="@style/tableListTextView" />
+
+                    <TextView
+                        android:id="@+id/dashTableCountTv5"
+                        android:layout_weight="4"
+                        style="@style/tableListTextView" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+</layout>

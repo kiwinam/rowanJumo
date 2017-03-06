@@ -1,0 +1,345 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        android:id="@+id/signupScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="@string/restaurant_information"
+                style="@style/myEditSubLabel" />
+
+            <include layout="@layout/item_divider" />
+
+            <include layout="@layout/item_divider" />
+
+            <include layout="@layout/item_divider" />
+
+            <LinearLayout
+                android:id="@+id/ownerRestEditLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:id="@+id/icon_restName"
+                        android:src="@drawable/ic_restaurant_black"
+                        style="@style/myContentImageView"
+                        android:contentDescription="@string/noImage" />
+
+                    <EditText
+                        android:id="@+id/restNameEditText"
+                        android:labelFor="@+id/restNameEditText"
+                        android:layout_toEndOf="@id/icon_restName"
+                        style="@style/myEditEditTextView"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        android:id="@+id/restNameTextView"
+                        android:labelFor="@+id/restNameTextView"
+                        android:layout_toEndOf="@id/icon_restName"
+                        style="@style/myEditEditTextView"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        android:id="@+id/restNameSmallEd"
+                        style="@style/myContentSmallTextView"
+                        android:layout_below="@id/restNameEditText"
+                        android:layout_toEndOf="@id/icon_restName"
+                        android:text="@string/edit_restaurant_name" />
+
+                    <TextView
+                        android:id="@+id/restNameSmallTv"
+                        style="@style/myContentSmallTextView"
+                        android:layout_below="@id/restNameTextView"
+                        android:layout_toEndOf="@id/icon_restName"
+                        android:text="Restaurant Name" />
+
+                </RelativeLayout>
+
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:id="@+id/icon_restAddress"
+                        android:src="@drawable/ic_place_black"
+                        style="@style/myContentImageView"
+                        android:contentDescription="@string/noImage" />
+
+                    <EditText
+                        android:id="@+id/restAddressEditText"
+                        android:labelFor="@+id/restAddressEditText"
+                        android:layout_toEndOf="@id/icon_restAddress"
+                        style="@style/myEditEditTextView"
+                        android:inputType="textPostalAddress" />
+
+                    <TextView
+                        android:id="@+id/restAddressTextView"
+                        android:labelFor="@+id/restAddressTextView"
+                        android:layout_toEndOf="@id/icon_restAddress"
+                        style="@style/myEditEditTextView"
+                        android:inputType="textPostalAddress" />
+
+                    <TextView
+                        android:id="@+id/restAddressSmallEd"
+                        style="@style/myContentSmallTextView"
+                        android:layout_below="@id/restAddressEditText"
+                        android:layout_toEndOf="@id/icon_restAddress"
+                        android:text="@string/edit_restaurant_address" />
+
+                    <TextView
+                        android:id="@+id/restAddressSmallTv"
+                        style="@style/myContentSmallTextView"
+                        android:layout_below="@id/restAddressTextView"
+                        android:layout_toEndOf="@id/icon_restAddress"
+                        android:text="@string/restaurant_address" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:id="@+id/icon_restPhone"
+                        android:src="@drawable/ic_phone"
+                        style="@style/myContentImageView"
+                        android:contentDescription="@string/noImage" />
+
+                    <EditText
+                        android:id="@+id/restPhoneEditText"
+                        android:labelFor="@+id/restPhoneEditText"
+                        android:layout_toEndOf="@id/icon_restPhone"
+                        style="@style/myEditEditTextView"
+                        android:inputType="phone" />
+
+                    <TextView
+                        android:id="@+id/restPhoneTextView"
+                        android:labelFor="@+id/restPhoneTextView"
+                        android:layout_toEndOf="@id/icon_restPhone"
+                        style="@style/myEditEditTextView"
+                        android:inputType="phone" />
+
+                    <TextView
+                        android:id="@+id/restPhoneSmallEd"
+                        style="@style/myContentSmallTextView"
+                        android:layout_below="@id/restPhoneEditText"
+                        android:layout_toEndOf="@id/icon_restPhone"
+                        android:text="@string/edit_restaurant_call" />
+
+                    <TextView
+                        android:id="@+id/restPhoneSmallTv"
+                        style="@style/myContentSmallTextView"
+                        android:layout_below="@id/restPhoneTextView"
+                        android:layout_toEndOf="@id/icon_restPhone"
+                        android:text="@string/restaurant_call" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/waiterRestEditLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:id="@+id/icon_restNum"
+                        android:src="@drawable/ic_restaurant_black"
+                        style="@style/myContentImageView"
+                        android:contentDescription="@string/noImage" />
+
+                    <EditText
+                        android:labelFor="@+id/restNumEditText"
+                        android:id="@+id/restNumEditText"
+                        android:layout_toEndOf="@id/icon_restNum"
+                        style="@style/myEditEditTextView"
+                        android:inputType="textPersonName" />
+
+                    <TextView
+                        style="@style/myContentSmallTextView"
+                        android:layout_below="@id/restNumEditText"
+                        android:layout_toEndOf="@id/icon_restNum"
+                        android:text="@string/edit_restaurant_id" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+            </LinearLayout>
+
+            <include layout="@layout/item_divider" />
+
+            <TextView
+                android:text="@string/edit_personal_information"
+                style="@style/myEditSubLabel" />
+
+            <include layout="@layout/item_divider" />
+
+            <include layout="@layout/item_divider" />
+
+            <include layout="@layout/item_divider" />
+
+            <EditText
+                android:id="@+id/firstNameEditText"
+                android:labelFor="@+id/firstNameEditText"
+                android:hint="@string/first_name"
+                android:textColorHint="@color/rowanAccent"
+                style="@style/myEditNameEditTextView" />
+
+            <EditText
+                android:id="@+id/lastNameEditText"
+                android:labelFor="@+id/lastNameEditText"
+                android:textColorHint="@color/rowanAccent"
+                android:hint="@string/last_name"
+                style="@style/myEditNameEditTextView" />
+
+            <RelativeLayout style="@style/myContentRelativeLayout">
+
+                <TextView
+                    android:id="@+id/birthdayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:hint="@string/defaultBirthdayHint"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/rowanAccent"
+                    android:drawableEnd="@drawable/ic_down_arrow"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#212121"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignStart="@+id/birthdayHint" />
+
+                <ImageView
+                    android:id="@+id/icon_birthday"
+                    android:src="@drawable/ic_calendar"
+                    style="@style/myContentImageView"
+                    android:contentDescription="@string/noImage" />
+
+                <TextView
+                    android:id="@+id/birthdayHint"
+                    style="@style/myContentSmallTextView"
+                    android:layout_below="@id/birthdayTextView"
+                    android:layout_toEndOf="@id/icon_birthday"
+                    android:text="@string/birthday" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/birthdayTextView"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="10dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/gender">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/male"
+                        android:textSize="12sp"
+                        android:id="@+id/male" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/female"
+                        android:textSize="12sp"
+                        android:id="@+id/female" />
+                </RadioGroup>
+
+                <TextView
+                    style="@style/myContentSmallTextView"
+                    android:layout_below="@id/birthdayTextView"
+                    android:layout_toEndOf="@id/birthdayTextView"
+                    android:text="@string/gender" />
+
+
+            </RelativeLayout>
+
+            <include layout="@layout/item_divider" />
+
+            <RelativeLayout style="@style/myContentRelativeLayout">
+
+                <ImageView
+                    android:id="@+id/icon_phone"
+                    android:src="@drawable/ic_smartphone_black"
+                    style="@style/myContentImageView"
+                    android:contentDescription="@string/noImage" />
+
+                <EditText
+                    android:id="@+id/phoneEditText"
+                    android:layout_toEndOf="@id/icon_phone"
+                    android:hint="@string/defaultPhoneHint"
+                    style="@style/myEditEditTextView"
+                    android:inputType="phone" />
+
+                <TextView
+                    style="@style/myContentSmallTextView"
+                    android:layout_below="@id/phoneEditText"
+                    android:layout_toEndOf="@id/icon_phone"
+                    android:text="@string/phone" />
+            </RelativeLayout>
+
+            <include layout="@layout/item_divider" />
+
+            <RelativeLayout style="@style/myContentRelativeLayout">
+
+                <ImageView
+                    android:id="@+id/icon_email"
+                    android:src="@drawable/ic_email"
+                    style="@style/myContentImageView"
+                    android:contentDescription="@string/noImage" />
+
+                <TextView
+                    android:id="@+id/emailEditText"
+                    android:layout_toEndOf="@id/icon_email"
+                    android:hint="@string/email_rowan_com"
+                    style="@style/myEditEditTextView" />
+
+                <TextView
+                    style="@style/myContentSmallTextView"
+                    android:layout_below="@id/emailEditText"
+                    android:layout_toEndOf="@id/icon_email"
+                    android:text="@string/email" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/item_divider" />
+
+            <RelativeLayout style="@style/myContentRelativeLayout">
+
+                <ImageView
+                    android:id="@+id/icon_address"
+                    android:src="@drawable/ic_address"
+                    style="@style/myContentImageView"
+                    android:contentDescription="@string/noImage" />
+
+                <EditText
+                    android:id="@+id/addressEditText"
+                    android:layout_toEndOf="@id/icon_address"
+                    android:hint="@string/enter_your_address"
+                    style="@style/myEditEditTextView" />
+
+                <TextView
+                    style="@style/myContentSmallTextView"
+                    android:layout_below="@id/addressEditText"
+                    android:layout_toEndOf="@id/icon_address"
+                    android:text="@string/address" />
+            </RelativeLayout>
+
+            <include layout="@layout/item_divider" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="smart.rowan.Fragment.WristBandFragment">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/set_wifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray1"
+
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/wifi_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="16dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_wifi"
+            android:duplicateParentState="true" />
+
+        <TextView
+            android:id="@+id/wifi_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/wifi_icon"
+            android:paddingTop="20dp"
+            android:text="nothing"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:duplicateParentState="true" />
+
+        <TextView
+            android:id="@+id/secured"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wifi_name"
+            android:layout_toRightOf="@+id/wifi_icon"
+            android:paddingBottom="20dp"
+            android:text="Touch here to change"
+            android:textSize="14dp"
+            android:duplicateParentState="true" />
+
+        <TextView
+            android:id="@+id/devices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:layout_centerVertical="true"
+            android:text="0"
+            android:textSize="30dp"
+            android:duplicateParentState="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp">
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:typeface="monospace"
+            android:textSize="15sp" />
+
+        <!--<ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/device_list">
+
+        </ListView> -->
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/initSettingBtn"
+        android:text="Initial setting"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

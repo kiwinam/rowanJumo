@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_configuring"
+        android:icon="@drawable/ic_wristband"
+        android:title="Configuring"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_pairing"
+        android:icon="@drawable/ic_pair"
+        android:title="Pairing"
+        app:showAsAction="always" />
+</menu>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <!--<tab
+        id="@+id/bottom_restaurant"
+        icon="@drawable/ic_restaurant"
+        title="Restaurant"/>
+        barColorWhenSelected="#42ccc7"
+        badgeBackgroundColor="#42ccc7" -->
+
+
+    <tab
+        id="@+id/bottom_dashboard"
+        icon="@drawable/ic_dashboard"
+        title="Dashboard" />
+    <tab
+        id="@+id/bottom_device"
+        icon="@drawable/ic_wristband"
+        title="Device" />
+    <tab
+        id="@+id/bottom_employee"
+        icon="@drawable/ic_employee"
+        title="Employee" />
+    <tab
+        id="@+id/bottom_my"
+        icon="@drawable/ic_my"
+        title="Settings" />
+</tabs>

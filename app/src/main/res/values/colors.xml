@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="rowanAccent">#ff4081</color>
+    <color name="rowan">#4d5c63</color>
+    <color name="rowandark">#3e4952</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#212121</color>
+    <color name="gray">#dcdcdc</color>
+    <color name="gray1">#ececec</color>
+
+    <color name="chart1">#00b8bf</color>
+    <color name="chart2">#8dd5e7</color>
+    <color name="chart3">#c0fff6</color>
+    <color name="chart4">#ffa928</color>
+    <color name="chart5">#edff9f</color>
+    <color name="chart6">#8dd000</color>
+    <color name="workColor">#ff0000</color>
+</resources>

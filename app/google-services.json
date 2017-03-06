@@ -1,0 +1,45 @@
+{
+  "project_info": {
+    "project_number": "776450067710",
+    "firebase_url": "https://rowan-eef0f.firebaseio.com",
+    "project_id": "rowan-eef0f",
+    "storage_bucket": "rowan-eef0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776450067710:android:6835670f59de3b93",
+        "android_client_info": {
+          "package_name": "smart.rowan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776450067710-r45u442rks3h3ft4bf4liu3ukv2k8kgk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwFpA-c154BlGmga6154-295iHz-hcLbc"
+        },
+        {
+          "current_key": "AIzaSyCaZWFd4nt_HKCTITnfPXB10hMLML92qeE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

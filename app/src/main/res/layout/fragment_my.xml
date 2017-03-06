@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mypage"
+        tools:context="smart.rowan.Fragment.MyFragment">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:background="@drawable/background"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:contentDescription="@string/noImage"
+                    android:id="@+id/img"
+                    android:layout_gravity="center"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/profile1" />
+
+                <TextView
+                    android:id="@+id/myFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_marginTop="160dp"
+                    android:textAlignment="center" />
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_camera"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|end" />
+
+        <android.support.v4.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="smart.rowan.Fragment.MyFragment"
+            tools:showIn="@layout/fragment_my">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:contentDescription="@string/noImage"
+                        android:id="@+id/icon_restName"
+                        android:src="@drawable/ic_restaurant_black"
+                        style="@style/myContentImageView" />
+
+                    <TextView
+                        android:id="@+id/myContentRestaurantName"
+                        android:layout_toEndOf="@id/icon_restName"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:text="@string/restaurant_name"
+                        android:layout_below="@id/myContentRestaurantName"
+                        android:layout_toEndOf="@id/icon_restName"
+                        style="@style/myContentSmallTextView" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:contentDescription="@string/noImage"
+                        android:id="@+id/icon_restAddr"
+                        android:src="@drawable/ic_place_black"
+                        style="@style/myContentImageView" />
+
+                    <TextView
+                        android:id="@+id/myContentRestaurantAddr"
+                        android:layout_toEndOf="@id/icon_restAddr"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:layout_below="@id/myContentRestaurantAddr"
+                        android:layout_toEndOf="@id/icon_restAddr"
+                        android:text="@string/restaurant_address"
+                        style="@style/myContentSmallTextView" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:contentDescription="@string/noImage"
+                        android:id="@+id/icon_restPhone"
+                        android:src="@drawable/ic_call_black"
+                        style="@style/myContentImageView" />
+
+                    <TextView
+                        android:id="@+id/myContentRestaurantCall"
+                        android:layout_toEndOf="@id/icon_restPhone"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:layout_below="@id/myContentRestaurantCall"
+                        android:layout_toEndOf="@id/icon_restPhone"
+                        android:text="@string/restaurant_call"
+                        style="@style/myContentSmallTextView" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:contentDescription="@string/noImage"
+                        android:id="@+id/icon_email"
+                        android:src="@drawable/ic_email"
+                        style="@style/myContentImageView" />
+
+                    <TextView
+                        android:id="@+id/myContentEmailTextView"
+                        android:autoLink="web|email"
+                        android:layout_toEndOf="@id/icon_email"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:layout_below="@id/myContentEmailTextView"
+                        android:layout_toEndOf="@id/icon_email"
+                        android:text="@string/email"
+                        style="@style/myContentSmallTextView" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:contentDescription="@string/noImage"
+                        android:id="@+id/icon_phone"
+                        android:src="@drawable/ic_smartphone_black"
+                        style="@style/myContentImageView" />
+
+                    <TextView
+                        android:id="@+id/myContentPhoneTextView"
+                        android:autoLink="phone"
+                        android:layout_toEndOf="@id/icon_phone"
+                        android:text="@string/defaultPhoneHint"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:layout_below="@id/myContentPhoneTextView"
+                        android:layout_toEndOf="@id/icon_phone"
+                        android:text="@string/phone"
+                        style="@style/myContentSmallTextView" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:contentDescription="@string/noImage"
+                        android:id="@+id/icon_birthday"
+                        android:src="@drawable/ic_today_black"
+                        style="@style/myContentImageView" />
+
+                    <TextView
+                        android:id="@+id/myContentBirthday"
+                        android:layout_toEndOf="@id/icon_birthday"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:layout_below="@id/myContentBirthday"
+                        android:layout_toEndOf="@id/icon_birthday"
+                        android:text="@string/birthday"
+                        style="@style/myContentSmallTextView" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:contentDescription="@string/noImage"
+                        android:id="@+id/icon_address"
+                        android:src="@drawable/ic_my_location_black"
+                        style="@style/myContentImageView" />
+
+                    <TextView
+                        android:id="@+id/myContentAddressTextView"
+                        android:layout_toEndOf="@id/icon_address"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:layout_below="@id/myContentAddressTextView"
+                        android:layout_toEndOf="@id/icon_address"
+                        android:text="@string/address"
+                        style="@style/myContentSmallTextView" />
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <ImageView
+                        android:contentDescription="@string/noImage"
+                        android:id="@+id/icon_startdate"
+                        android:src="@drawable/ic_calendar"
+                        style="@style/myContentImageView" />
+
+                    <TextView
+                        android:id="@+id/myContentStartDateTv"
+                        android:layout_toEndOf="@id/icon_startdate"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:id="@+id/myContentMiddletDateTv"
+                        android:layout_toEndOf="@id/myContentStartDateTv"
+                        android:text="@string/flow"
+                        style="@style/myContentMediumTextView" />
+
+                    <TextView
+                        android:id="@+id/myContentEndDateTv"
+                        android:layout_toEndOf="@id/myContentMiddletDateTv"
+                        style="@style/myContentMediumTextView" />
+
+
+                    <TextView
+                        android:layout_below="@id/myContentStartDateTv"
+                        android:layout_toEndOf="@id/icon_startdate"
+                        android:text="@string/since"
+                        style="@style/myContentSmallTextView" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/item_divider" />
+
+
+                <RelativeLayout style="@style/myContentRelativeLayout">
+
+                    <Button
+                        android:id="@+id/signOutBtn"
+                        style="?android:textAppearanceSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/logout"
+                        android:textStyle="bold"
+                        android:background="@android:color/holo_red_dark"
+                        android:textColor="@android:color/primary_text_dark"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

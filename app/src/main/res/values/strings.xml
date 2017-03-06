@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">ROWAN</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="forgot">Forgot password?</string>
+    <string name="no_account"><u>No account. <b>Create one?</b></u></string>
+    <string name="back_login">Already have one. <b>Login?</b></string>
+    <string name="term"><b><u>term of service.</u></b></string>
+    <string name="reset_pass">Reset password</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short.</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="test_data">This is test data for fragment %1$d</string>
+
+    <string name="firstname">First name</string>
+    <string name="lastname">Last name</string>
+    <string name="scan_wristband">Scan Wristband</string>
+    <string name="ssid">SSID</string>
+
+    <string name="dash_board_average">Average Time</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="average_php">http://165.132.110.130/rowan/averageTime.php</string>
+    <string name="average_test_jsp">http://creativerowan.com/test/getAverageTime.jsp</string>
+    <string name="dashboard_php">http://165.132.110.130/rowan/dashboard.php</string>
+    <string name="table_served_information">Table served information</string>
+    <string name="peak_time">Peak Time</string>
+    <string name="please_select_day">Please Select Day</string>
+    <string name="restaurant_information">Restaurant information</string>
+    <string name="edit_restaurant_name">Edit Restaurant Name</string>
+    <string name="edit_restaurant_id">Edit Restaurant ID</string>
+    <string name="restaurant_name">Restaurant name</string>
+
+    <string name="noImage">No image</string>
+    <string name="address">Address</string>
+    <string name="enter_your_address">Enter your address</string>
+    <string name="email_rowan_com">email@rowan.com</string>
+    <string name="phone">Phone</string>
+    <string name="defaultPhoneHint">000\-0000\-0000</string>
+    <string name="gender">Gender</string>
+    <string name="female">female</string>
+    <string name="male">male</string>
+    <string name="birthday">Birthday</string>
+    <string name="defaultBirthdayHint">2017.01.01</string>
+    <string name="edit_restaurant_address">Edit Restaurant Address</string>
+    <string name="edit_restaurant_call">Edit Restaurant Call</string>
+    <string name="edit_personal_information">Edit personal information</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="agree">I agree to the </string>
+
+    <string name="sendBtn">send</string>
+    <string name="logout">LOGOUT</string>
+    <string name="since">Worked since</string>
+    <string name="flow">~</string>
+    <string name="restaurant_call">Restaurant Call</string>
+    <string name="restaurant_address">Restaurant Address</string>
+    <string name="createRestaurant">Create restaurant</string>
+    <string name="createNewRestaurant">Create New restaurant</string>
+    <string name="joinRestaurant">Join to restaurant</string>
+    <string name="phoneNum">Phone number</string>
+    <string name="restaurant_id">Restaurant ID</string>
+</resources>
