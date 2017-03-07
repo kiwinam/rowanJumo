@@ -1,6 +1,8 @@
 package smart.rowan.chatting;
 
 
+import android.util.Log;
+
 public class ChatData {
     private String userName;
     private String userName2;
@@ -8,6 +10,10 @@ public class ChatData {
     private String sendTime;
     private String times;
     private String myName;
+
+    public ChatData(){
+        Log.d("no argument","");
+    }
 
     public ChatData(String userName, String userName2, String message, String sendTime, String times, String myName) {
         this.userName = userName;

@@ -17,7 +17,7 @@ import smart.rowan.databinding.ActivitySignupBinding;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private static final int REQUEST_SIGNIN = 0;
+    private static final int REQUEST_SIGN_IN = 0;
     ActivitySignupBinding binding;
     String db_first_name, db_last_name, db_email, db_password, db_password_confirm;
 
@@ -71,7 +71,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNIN);
+                startActivityForResult(intent, REQUEST_SIGN_IN);
             }
         });
     }

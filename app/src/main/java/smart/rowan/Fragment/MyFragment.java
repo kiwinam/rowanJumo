@@ -134,15 +134,15 @@ public class MyFragment extends Fragment {
             public void onClick(View view) {
                 Toast.makeText(getContext(), "Good bye " + sUser.getFirstName().toUpperCase(), Toast.LENGTH_SHORT).show();
                 HashMap<String, Long> tmpHashMap = new HashMap<>();
-
-                if (sUser.getPosition().equals("waiter")) {
-                    lastMsg = myData.getLong("last", 0L);
-                    Log.d("before logout", lastMsg + "");
-                } else if (sUser.getPosition().equals("owner")) {
-                    lastMsg = myData.getLong("oLastMsg", 0L);
+                switch (sUser.getPosition()) {
+                    case "waiter" :
+                        lastMsg = myData.getLong("last", 0L);
+                        break;
+                    case "owner":
+                        lastMsg = myData.getLong("oLastMsg", 0L);
+                        break;
                 }
                 tmpHashMap.put(sUser.getId(), lastMsg);
-                Log.d("sUserId = " + sUser.getEmail(), "lastMsg" + lastMsg);
                 Gson gson = new Gson();
                 String hashMapString = gson.toJson(tmpHashMap);
                 SharedPreferences tmpData = getActivity().getSharedPreferences("tmpData", Context.MODE_PRIVATE);

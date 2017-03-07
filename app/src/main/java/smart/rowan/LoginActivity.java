@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -18,7 +17,6 @@ import smart.rowan.chatting.EmployerService;
 import smart.rowan.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final int REQUEST_SIGN_UP = 0;
     private long mLastTimeBackPressed;
     String email, pass;
     String sessionCheck;
@@ -55,7 +53,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         // Check login session
         boolean is = MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployerService");
-        //  Log.d("is", is + "");
         if (is) {
             stopService(new Intent(this, EmployerService.class));
         }
