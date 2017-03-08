@@ -26,11 +26,6 @@ public class wifiAdapter extends AppCompatActivity {
     ArrayAdapter<String> adapter;
 
     private class ScanIpTask extends AsyncTask<Void, String, Void> {
-
-        // static final String subnet = "192.168.1.";
-        // static final int lower = 165;
-        // static final int upper = 173;
-
         static final String subnet = "192.168.1.100";
         static final int timeout = 5000;
 

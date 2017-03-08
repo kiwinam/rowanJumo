@@ -178,7 +178,6 @@ public class HomeActivity extends AppCompatActivity {
         count2 = mydata.getInt("countMsg", 0);
         nearby2.setBadgeCount(count2);
 
-
         // Set bottom menu for user depending on Owner or waiter.
         if (mPosition.equals(owner)) {
             bottomBarWaiter.setVisibility(View.GONE);

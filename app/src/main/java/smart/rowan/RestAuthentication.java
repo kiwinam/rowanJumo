@@ -24,7 +24,7 @@ public class RestAuthentication extends AsyncTask<String, Void, String> {
     private Context context;
     private Activity activity;
     private ProgressDialog progressBar;
-    private String restId, userId, position;
+    private String position;
 
     public RestAuthentication(Context ctx) {
         this.context = ctx;
@@ -47,6 +47,7 @@ public class RestAuthentication extends AsyncTask<String, Void, String> {
     }
 
     protected String doInBackground(String... param) {
+        String restId, userId;
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -85,7 +86,7 @@ public class RestAuthentication extends AsyncTask<String, Void, String> {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
                 StringBuilder sb = new StringBuilder();
-                String line = null;
+                String line;
 
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
@@ -105,14 +106,11 @@ public class RestAuthentication extends AsyncTask<String, Void, String> {
 
             try {
                 publishProgress();
-
                 restId = param[1];
                 userId = param[2];
-
                 String link = activity.getString(R.string.join_rest);
                 String data = URLEncoder.encode("joinrestid", "UTF-8") + "=" + URLEncoder.encode(restId, "UTF-8") + "&" +
                         URLEncoder.encode("joinuserid", "UTF-8") + "=" + URLEncoder.encode(userId, "UTF-8");
-
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");

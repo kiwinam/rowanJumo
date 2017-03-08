@@ -18,11 +18,10 @@ import smart.rowan.databinding.FragmentOwnerBinding;
 
 public class OwnerFragment extends Fragment implements View.OnClickListener {
 
-    String restId, restName, restPhone, restAddress, userId, firstName, lastName, position;
+    String restId, restName, restPhone, restAddress, userId;
     FragmentOwnerBinding ownerBinding;
 
     public OwnerFragment() {}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -23,9 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Arrays;
-
 import smart.rowan.HomeActivity;
+import smart.rowan.MethodClass;
 import smart.rowan.R;
 
 public class EmployeeService extends Service {
@@ -81,12 +80,10 @@ public class EmployeeService extends Service {
             String ownerEmail = sharedPreferences.getString("ownerEmail", null);
             ownerName = sharedPreferences.getString("ownerName", null);
             lastKey = sharedPreferences.getLong("last", 0L);
-            String[] sorts = {myEmail, ownerEmail};
-            Arrays.sort(sorts);
-            key = sorts[0] + "-" + sorts[1];
+            key = MethodClass.sorting(myEmail, ownerEmail);
             databaseReference.child(key).limitToLast(30).addChildEventListener(childEventListener);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getMessage();
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -144,5 +141,4 @@ public class EmployeeService extends Service {
         @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
         @Override public void onCancelled(DatabaseError databaseError) {}
     };
-
 }
