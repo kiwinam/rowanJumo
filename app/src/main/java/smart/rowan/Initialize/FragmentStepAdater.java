@@ -26,15 +26,15 @@ public class FragmentStepAdater extends AbstractFragmentStepAdapter {
         switch (position) {
             case 0:
                 return new StepViewModel.Builder(context)
-                        .setTitle("abcd")
+                        .setTitle("Select Device")
                         .create();
             case 1:
                 return new StepViewModel.Builder(context)
-                        .setTitle("aaaaaa")
+                        .setTitle("Put your Restaurant Information")
                         .create();
             case 2:
                 return new StepViewModel.Builder(context)
-                        .setTitle("bdfeda")
+                        .setTitle("Select Wifi")
                         .create();
             default:
                 return new StepViewModel.Builder(context)

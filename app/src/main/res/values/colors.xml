@@ -16,5 +16,6 @@
     <color name="chart4">#ffa928</color>
     <color name="chart5">#edff9f</color>
     <color name="chart6">#8dd000</color>
-    <color name="workColor">#ff0000</color>
+    <color name="workColor">#ca0000</color>
+    <color name="workColor1">#eb595959</color>
 </resources>

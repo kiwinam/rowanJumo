@@ -10,7 +10,7 @@
 
     <tab
         id="@+id/bottom_dashboard"
-        icon="@drawable/ic_dashboard"
+        icon="@drawable/ic_dashboard_black_24dp"
         title="Dashboard" />
     <tab
         id="@+id/bottom_device"
@@ -23,5 +23,5 @@
     <tab
         id="@+id/bottom_my"
         icon="@drawable/ic_my"
-        title="Settings" />
+        title="My" />
 </tabs>

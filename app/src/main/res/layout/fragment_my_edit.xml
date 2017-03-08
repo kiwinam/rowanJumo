@@ -205,7 +205,13 @@
                 android:hint="@string/last_name"
                 style="@style/myEditNameEditTextView" />
 
-            <RelativeLayout style="@style/myContentRelativeLayout">
+            <RelativeLayout style="@style/myContentRelativeLayout" >
+
+                <ImageView
+                    android:id="@+id/icon_birthday"
+                    android:src="@drawable/ic_calendar"
+                    style="@style/myContentImageView"
+                    android:contentDescription="@string/noImage" />
 
                 <TextView
                     android:id="@+id/birthdayTextView"
@@ -221,12 +227,6 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignStart="@+id/birthdayHint" />
 
-                <ImageView
-                    android:id="@+id/icon_birthday"
-                    android:src="@drawable/ic_calendar"
-                    style="@style/myContentImageView"
-                    android:contentDescription="@string/noImage" />
-
                 <TextView
                     android:id="@+id/birthdayHint"
                     style="@style/myContentSmallTextView"
@@ -236,7 +236,7 @@
 
                 <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/birthdayTextView"
                     android:paddingStart="0dp"
                     android:paddingEnd="10dp"
@@ -266,6 +266,7 @@
 
 
             </RelativeLayout>
+
 
             <include layout="@layout/item_divider" />
 

@@ -2,6 +2,7 @@ package smart.rowan.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,8 +33,9 @@ import smart.rowan.databinding.FragmentMyEditBinding;
 
 public class MyEditFragment extends Fragment {
 
-    String mRestId, mId, mFirstName, mLastName, mBirthDay, mGender, mPhone, mEmail, mAddress;
+    String mRestId, mRestName, mRestAddress, mRestPhone, mId, mFirstName, mLastName, mBirthDay, mGender, mPhone, mEmail, mAddress;
     String[] restInfo;
+    SharedPreferences mydata;
     FragmentMyEditBinding mMy;
 
     @Override
@@ -52,6 +54,13 @@ public class MyEditFragment extends Fragment {
         }
         setData();
         mMy.birthdayTextView.setOnClickListener(mButtonClickListenerBday);
+
+        // set data
+
+//        my_startdate.setText(m_startdate);
+//        my_enddate.setText(m_enddate);
+//        my_detail.setText(mDetail);
+
         // Set gender.
         mMy.gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -208,7 +217,7 @@ public class MyEditFragment extends Fragment {
         protected String doInBackground(String[]... param) {
             String[] data = param[0];
             ApiController apiController = new ApiController();
-            Map<String, String> input = new HashMap<>();
+            Map input = new HashMap<String, String>();
             input.put("userId", mId);
             input.put("restId", HomeActivity.sRest.getRestId());
             Log.d("restId on edit", HomeActivity.sRest.getRestId());
@@ -225,7 +234,7 @@ public class MyEditFragment extends Fragment {
             apiController.start(input);
             if (!data[0].equals("")) {
                 Log.d("data[0] is", "not null!" + data[0]);
-                Map<String, String> join = new HashMap<>();
+                Map join = new HashMap<String, String>();
                 join.put("joinrestid", data[0]);
                 join.put("joinuserid", mId);
                 apiController.joinStart(join);
@@ -250,6 +259,8 @@ public class MyEditFragment extends Fragment {
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
             System.out.println("10 called ");
+            //MyFragment myData = new MyFragment();
+            // myData.setMyData(firstName, lastName, phone, email, mAddress);
         }
 
         protected void onPostExecute(String res) {

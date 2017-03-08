@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import smart.rowan.HomeActivity;
+import smart.rowan.Initialize.DotActivity;
 import smart.rowan.R;
 
 
@@ -115,6 +117,13 @@ public class WristBandFragment extends Fragment {
         view.findViewById(R.id.set_wifi).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialogWifiConfig();
+            }
+        });
+
+        view.findViewById(R.id.initSettingBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), DotActivity.class));
             }
         });
 

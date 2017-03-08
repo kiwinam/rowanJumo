@@ -52,7 +52,7 @@ public class EmployeeDashBoardFragment extends Fragment implements OnDateSelecte
     @Override
     public void onDateSelected(@NotNull MaterialCalendarView widget, @Nullable CalendarDay date, boolean selected) {
         try {
-            String result = new TaskMethod(getString(R.string.dashboard_php), "restId=" + HomeActivity.sRest.getRestId() + "&userId=" + HomeActivity.sUser.getId() + "&date=" + getSelectedDatesString(), "UTF-8").execute().get();
+            String result = new TaskMethod(getString(R.string.employee_dashboard_php), "restId=" + HomeActivity.sRest.getRestId() + "&userId=" + HomeActivity.sUser.getId() + "&date=" + getSelectedDatesString(), "UTF-8").execute().get();
             if (result.equals("NO DATA FOUND.")) {
                 Log.d("no", "data receive");
                 Toast.makeText(getActivity(), "You didn't work that day", Toast.LENGTH_SHORT).show();

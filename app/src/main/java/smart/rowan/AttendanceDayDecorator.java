@@ -23,6 +23,7 @@ public class AttendanceDayDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.addSpan(new myDotSpan(6, activity.getApplicationContext().getResources().getColor(R.color.workColor)));
+        //view.addSpan(new myDotSpan(8, activity.getApplicationContext().getResources().getColor(R.color.workColor)));
+        view.addSpan(new myDotSpan(10, activity.getApplicationContext().getResources().getColor(R.color.workColor)));
     }
 }

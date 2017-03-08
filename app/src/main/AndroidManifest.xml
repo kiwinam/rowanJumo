@@ -45,7 +45,9 @@
             android:name=".chatting.OneOOneActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".Initialize.DotActivity"
+            android:screenOrientation="portrait"
+            />
         <service
             android:name=".chatting.MyFireBaseMessagingService"
             android:exported="false">

@@ -18,6 +18,9 @@ public class ChatData {
         this.myName = myName;
     }
 
+    public ChatData(){
+    }
+
     public String getUserName() {
         return userName;
     }
