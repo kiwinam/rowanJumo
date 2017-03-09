@@ -24,10 +24,10 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
-import smart.rowan.AnyListener;
-import smart.rowan.DataObserver;
+import smart.rowan.etc.AnyListener;
+import smart.rowan.etc.DataObserver;
 import smart.rowan.HomeActivity;
-import smart.rowan.MethodClass;
+import smart.rowan.etc.MethodClass;
 import smart.rowan.R;
 import smart.rowan.databinding.ActivityOneOneBinding;
 
@@ -47,6 +47,7 @@ public class OneOOneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind = DataBindingUtil.setContentView(this, CONTENT_VIEW);
+        MethodClass methodClass = new MethodClass();
         sharedPreferences = getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         if (mNotificationManager != null) {
             mNotificationManager.cancel(777);
@@ -56,8 +57,8 @@ public class OneOOneActivity extends AppCompatActivity {
         Intent intent = getIntent();
         user1Nick = sUser.getLastName() + " " + sUser.getFirstName();
         user2Nick = intent.getStringExtra("youNick");
-        user1Email = sUser.getEmail().replace(".", "");
-        user2Email = intent.getStringExtra("youEmail").replace(".", "");
+        user1Email = methodClass.replaceComma(sUser.getEmail());
+        user2Email = methodClass.replaceComma(intent.getStringExtra("youEmail"));
         String hashMapString = sharedPreferences.getString("messageMap", null);
         times = sharedPreferences.getLong("oLastMsg", 0L);
         if (hashMapString != null) {
@@ -99,7 +100,7 @@ public class OneOOneActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<ChatData, ViewHolder> mFirebaseAdapter = new FirebaseRecyclerAdapter<ChatData,
                 ViewHolder>(
                 ChatData.class,
-                R.layout.simple_list_item_1,
+                R.layout.chat_row,
                 ViewHolder.class,
                 databaseReference.child(dbName)) {
 

@@ -15,6 +15,8 @@ import smart.rowan.R;
 import smart.rowan.RestAuthentication;
 import smart.rowan.databinding.FragmentOwnerBinding;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 
 public class OwnerFragment extends Fragment implements View.OnClickListener {
 
@@ -29,7 +31,7 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
         View view = ownerBinding.getRoot();
 
         ownerBinding.createRestBtn.setOnClickListener(this);
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         userId = sharedPreferences.getString("id", null);

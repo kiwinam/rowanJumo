@@ -1,6 +1,5 @@
 package smart.rowan.chatting;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,13 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -24,14 +20,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import smart.rowan.HomeActivity;
-import smart.rowan.MethodClass;
-import smart.rowan.R;
+import smart.rowan.etc.MethodClass;
 
 public class EmployeeService extends Service {
     private EmployeeService service;
     private String myEmail;
     private String ownerName;
     private long lastKey;
+    private static final String OWNER = "OWNER";
+    private static final String ERROR_MSG = "Occurred temporary error. Please check network stat and try again. - employeeService";
+    private MethodClass methodClass;
     private NotificationManager mNotificationManager;
     private SharedPreferences sharedPreferences;
     private DatabaseReference databaseReference;
@@ -70,20 +68,21 @@ public class EmployeeService extends Service {
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         toast = new Toast(getApplicationContext());
+        methodClass = new MethodClass();
         service = this;
         try {
             //  Log.d("직원 서비스 시작됨", "촤ㅘ하하하");
             databaseReference = FirebaseDatabase.getInstance().getReference();
             sharedPreferences = getSharedPreferences("SharedData", Context.MODE_PRIVATE);
             count = sharedPreferences.getInt("countMsg", 0);
-            myEmail = sharedPreferences.getString("email", "noEmail").replace(".", "");
+            myEmail = methodClass.replaceComma(sharedPreferences.getString("email", "noEmail"));
             String ownerEmail = sharedPreferences.getString("ownerEmail", null);
             ownerName = sharedPreferences.getString("ownerName", null);
             lastKey = sharedPreferences.getLong("last", 0L);
             key = MethodClass.sorting(myEmail, ownerEmail);
             databaseReference.child(key).limitToLast(30).addChildEventListener(childEventListener);
         } catch (Exception e) {
-            e.getMessage();
+            Toast.makeText(this, ERROR_MSG, Toast.LENGTH_SHORT).show();
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -105,40 +104,34 @@ public class EmployeeService extends Service {
                     editor.putInt("countMsg", count);
                     editor.apply();
                     HomeActivity.nearby2.setBadgeCount(count);
-                    View toastLayout = inflater.inflate(R.layout.toast_message, null);
-                    TextView textView = (TextView) toastLayout.findViewById(R.id.senderName);
-                    textView.setText(ownerName);
-                    TextView textView2 = (TextView) toastLayout.findViewById(R.id.senderText);
-                    textView2.setText(msg);
-                    toast.cancel();
-                    toast = new Toast(getApplicationContext());
-                    toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 400);
-                    toast.setDuration(Toast.LENGTH_SHORT);
-                    toast.setView(toastLayout);
-                    toast.show();
+                    if (Build.VERSION.SDK_INT <= 23) {
+                        toast = methodClass.showToastMsg(inflater, ownerName, toast, msg, getApplicationContext());
+                    }
                     Intent intent = new Intent(service, HomeActivity.class);
                     mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    Notification notification;
                     PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
                     Resources resources = getResources();
-                    builder.setContentTitle("※ New Message From OWNER")
-                            .setContentText(chatData.getMessage())
-                            .setTicker("New Message From ROWAN")
-                            .setSmallIcon(R.drawable.ic_watch_white_18dp)
-                            .setContentIntent(pendingIntent)
-                            .setAutoCancel(true)
-                            .setNumber(count)
-                            .setWhen(System.currentTimeMillis())
-                            .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher));
-                    notification = builder.build();
-                    mNotificationManager.notify(776, notification);
+                    methodClass.showNotificationMsg(builder, chatData.getMessage(), pendingIntent, resources, OWNER);
+                    mNotificationManager.notify(776, builder.build());
                 }
             }
         }
-        @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-        @Override public void onChildRemoved(DataSnapshot dataSnapshot) {}
-        @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-        @Override public void onCancelled(DatabaseError databaseError) {}
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+        }
     };
 }

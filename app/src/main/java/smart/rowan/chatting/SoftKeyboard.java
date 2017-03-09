@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SoftKeyboard implements View.OnFocusChangeListener {
+class SoftKeyboard implements View.OnFocusChangeListener {
     private static final int CLEAR_FOCUS = 0;
 
     private ViewGroup layout;
@@ -24,7 +24,7 @@ public class SoftKeyboard implements View.OnFocusChangeListener {
 
     private View tempView; // reference to a focused EditText
 
-    public SoftKeyboard(ViewGroup layout, InputMethodManager im) {
+    SoftKeyboard(ViewGroup layout, InputMethodManager im) {
         this.layout = layout;
         keyboardHideByDefault();
         initEditTexts(layout);
@@ -52,7 +52,7 @@ public class SoftKeyboard implements View.OnFocusChangeListener {
         }
     }
 
-    public void setSoftKeyboardCallback(SoftKeyboardChanged mCallback) {
+    void setSoftKeyboardCallback(SoftKeyboardChanged mCallback) {
         softKeyboardThread.setCallback(mCallback);
     }
 
@@ -60,10 +60,10 @@ public class SoftKeyboard implements View.OnFocusChangeListener {
         softKeyboardThread.stopThread();
     }
 
-    public interface SoftKeyboardChanged {
-        public void onSoftKeyboardHide();
+    interface SoftKeyboardChanged {
+        void onSoftKeyboardHide();
 
-        public void onSoftKeyboardShow();
+        void onSoftKeyboardShow();
     }
 
     private int getLayoutCoordinates() {
@@ -82,7 +82,7 @@ public class SoftKeyboard implements View.OnFocusChangeListener {
      */
     private void initEditTexts(ViewGroup viewgroup) {
         if (editTextList == null)
-            editTextList = new ArrayList<EditText>();
+            editTextList = new ArrayList<>();
 
         int childCount = viewgroup.getChildCount();
         for (int i = 0; i <= childCount - 1; i++) {
@@ -136,7 +136,7 @@ public class SoftKeyboard implements View.OnFocusChangeListener {
         private AtomicBoolean started;
         private SoftKeyboardChanged mCallback;
 
-        public SoftKeyboardChangesThread() {
+        SoftKeyboardChangesThread() {
             started = new AtomicBoolean(true);
         }
 
@@ -199,13 +199,13 @@ public class SoftKeyboard implements View.OnFocusChangeListener {
             }
         }
 
-        public void keyboardOpened() {
+        void keyboardOpened() {
             synchronized (this) {
                 notify();
             }
         }
 
-        public void stopThread() {
+        void stopThread() {
             synchronized (this) {
                 started.set(false);
                 notify();

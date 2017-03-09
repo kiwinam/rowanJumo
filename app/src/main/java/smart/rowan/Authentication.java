@@ -16,7 +16,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -51,23 +50,22 @@ public class Authentication extends AsyncTask<String, Void, String> {
         if (method.equals("login")) {
             try {
                 publishProgress();
-                String myid = param[1];
-                String mypass = param[2];
+                String myId = param[1];
+                String myPass = param[2];
 
                 String link = "http://165.132.110.130/rowan/login.php";
-                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(myid, "UTF-8") + "&" +
-                        URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(mypass, "UTF-8");
+                String data = "email=" + myId + "&pass=" + myPass;
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
 
                 conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 
                 wr.write(data);
                 wr.flush();
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
                 //StringBuilder stringBuilder = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -102,23 +100,19 @@ public class Authentication extends AsyncTask<String, Void, String> {
                 String password = param[4];
 
                 String link = activity.getString(R.string.register);
-                String data = URLEncoder.encode("fname", "UTF-8") + "=" + URLEncoder.encode(first_name, "UTF-8") + "&" +
-                        URLEncoder.encode("lname", "UTF-8") + "=" + URLEncoder.encode(last_name, "UTF-8") + "&" +
-                        URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") + "&" +
-                        URLEncoder.encode("pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8") + "&" +
-                        URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(registered_date, "UTF-8");
+                String data = "fname=" + first_name +"&lname=" + last_name +
+                        "&email=" + email + "&pass=" + password + "date=" + registered_date;
 
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
-                Log.e("requestMethod", conn.getRequestMethod());
                 conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 
                 wr.write(data);
                 wr.flush();
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
                 StringBuilder sb = new StringBuilder();
                 String line;
@@ -145,51 +139,55 @@ public class Authentication extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String res) {
-        String result_reg = "SUCCESSFULLY REGISTERED!";
-        SharedPreferences autoLogin = context.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = autoLogin.edit();
-        if (res.equals(result)) {
-            switch (position) {
-                case "0":
-                    if (TextUtils.isEmpty(user_id)) {
-                        Toast.makeText(context, result_reg, Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                    } else {
+        try {
+            String result_reg = "SUCCESSFULLY REGISTERED!";
+            SharedPreferences autoLogin = context.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = autoLogin.edit();
+            if (res.equals(result)) {
+                switch (position) {
+                    case "0":
+                        if (TextUtils.isEmpty(user_id)) {
+                            Toast.makeText(context, result_reg, Toast.LENGTH_SHORT).show();
+                            context.startActivity(new Intent(context, LoginActivity.class));
+                        } else {
+                            editor.putString("id", user_id);
+                            editor.putString("firstName", full_name);
+                            editor.putString("position", position);
+                            editor.apply();
+                            activity.startActivity(new Intent(context, SelectionActivity.class));
+                        }
+                        activity.finish();
+                        break;
+                    case "-1":
+                        Toast.makeText(context, "Is Already Information.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case "owner":
+                    case "waiter":
                         editor.putString("id", user_id);
                         editor.putString("firstName", full_name);
                         editor.putString("position", position);
+                        editor.putString("email", email);
                         editor.apply();
-                        activity.startActivity(new Intent(context, SelectionActivity.class));
-                    }
-                    activity.finish();
-                    break;
-                case "-1":
-                    Toast.makeText(context, "Is Already Information.", Toast.LENGTH_SHORT).show();
-                    break;
-                case "owner":
-                case "waiter":
-                    editor.putString("id", user_id);
-                    editor.putString("firstName", full_name);
-                    editor.putString("position", position);
-                    editor.putString("email", email);
-                    editor.apply();
-                    Intent owner = new Intent(context, HomeActivity.class);
-                    activity.startActivity(owner);
-                    activity.finish();
-                    break;
-                default:
-                    System.out.println("~~~~~~~~Role is ERROR: ");
-                    break;
+                        Intent owner = new Intent(context, HomeActivity.class);
+                        activity.startActivity(owner);
+                        activity.finish();
+                        break;
+                    default:
+                        System.out.println("~~~~~~~~Role is ERROR: ");
+                        break;
+                }
+                progressBar.dismiss();
+            } else if (res.equals(result_reg)) {
+                Toast.makeText(context, "Registered sucessfully. Thank you!", Toast.LENGTH_LONG).show();
+                context.startActivity(new Intent(context, LoginActivity.class));
+                activity.finish();
+                progressBar.dismiss();
+            } else {
+                Toast.makeText(context, res, Toast.LENGTH_LONG).show();
+                progressBar.dismiss();
             }
-            progressBar.dismiss();
-        } else if (res.equals(result_reg)) {
-            Toast.makeText(context, "Registered sucessfully. Thank you!", Toast.LENGTH_LONG).show();
-            context.startActivity(new Intent(context, LoginActivity.class));
-            activity.finish();
-            progressBar.dismiss();
-        } else {
-            Toast.makeText(context, res, Toast.LENGTH_LONG).show();
-            progressBar.dismiss();
+        } catch (Exception e) {
+            Toast.makeText(context, "Occurred temporary Error!", Toast.LENGTH_SHORT).show();
         }
     }
 }

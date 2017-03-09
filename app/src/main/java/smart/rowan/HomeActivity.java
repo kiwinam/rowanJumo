@@ -3,39 +3,21 @@ package smart.rowan;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarTab;
-import com.roughike.bottombar.OnTabSelectListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Set;
 
-import smart.rowan.Fragment.DashBoardFragment;
-import smart.rowan.Fragment.EmployeeDashBoardFragment;
-import smart.rowan.Fragment.EmployeeFragment;
-import smart.rowan.Fragment.MyFragment;
-import smart.rowan.Fragment.OneOOneFragment;
-import smart.rowan.Fragment.WristBandFragment;
 import smart.rowan.chatting.EmployeeService;
 import smart.rowan.chatting.EmployerService;
 
@@ -56,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     String restId;
     String mOwnerEmail;
     public static boolean isHome;
+    boolean isFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +54,6 @@ public class HomeActivity extends AppCompatActivity {
         try {
             String result = new TaskMethod(activity.getString(R.string.home),
                     "usrid=" + mUserId, "UTF-8").execute().get();
-            //Log.e("result", result);
             String[] val = result.split("/");
                 /*firstName = val[1];lastName = val[2];email = val[3];birthday = val[4];startDate = val[5];
             endDate = val[6];gender = val[7];phone = val[8];address = val[9];position = val[10];
@@ -82,9 +64,8 @@ public class HomeActivity extends AppCompatActivity {
             sUser = new UserInformation(mUserId, val[1], val[2], val[3], val[4], val[5], val[6], val[7], val[8], val[9], val[10]);
             sRest = new RestaurantInformation(val[13], val[14], val[15], val[20]);
         } catch (Exception e) {
-            e.getMessage();
+            Toast.makeText(this, "Occurred Temporary Error, Please try again.", Toast.LENGTH_SHORT).show();
         }
-        //Log.d(sRest.getRestName(), sRest.getRestId());
         tmpData = getSharedPreferences("tmpData", Context.MODE_PRIVATE);
         String tmpString = tmpData.getString("tmpString", null);
         if (!TextUtils.isEmpty(tmpString)) {
@@ -99,7 +80,6 @@ public class HomeActivity extends AppCompatActivity {
                         editor.putLong("last", users.get(sUser.getId()));
                     }
                     editor.apply();
-                    //Log.d("userLastMsg", users.get(sUser.getId()) + " is receive lastMsg Time.");
                     users.remove(sUser.getId());
                     SharedPreferences.Editor editor1 = tmpData.edit();
                     editor1.remove(sUser.getId());
@@ -107,8 +87,10 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         }
-
-        Toast.makeText(getApplicationContext(), "Welcome " + mFirstName.toUpperCase(), Toast.LENGTH_SHORT).show();
+        if (isFirst) {
+            Toast.makeText(getApplicationContext(), "Welcome " + mFirstName.toUpperCase(), Toast.LENGTH_SHORT).show();
+            isFirst = false;
+        }
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBarMain);
         BottomBar bottomBarWaiter = (BottomBar) findViewById(R.id.bottomBarMainWaiter);
         nearby = bottomBar.getTabWithId(R.id.bottom_employee);
@@ -116,119 +98,61 @@ public class HomeActivity extends AppCompatActivity {
         if (mPosition.equals(owner)) {
             if (!MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployerService")) {
                 startService(new Intent(this, EmployerService.class));
-                // Log.d("is start", "true");
             }
-            stopService(new Intent(this, EmployeeService.class));
+            if (MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployeeService")) {
+                stopService(new Intent(this, EmployeeService.class));
+            }
             isHome = true;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (isHome) {
-                        try {
-                            Thread.sleep(200);
-                            count = 0;
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String hashString = mydata.getString("messageMap", null);
-                                    if (!TextUtils.isEmpty(hashString)) {
-                                        int cc = 0;
-                                        HashMap<String, Integer> messageMap = MethodClass.changeStringToHashMap(hashString);
-                                        //Log.d("homeMessgeMap", messageMap+"");
-                                        Set<String> keySet = messageMap.keySet();
-                                        for (String key : keySet) {
-                                            Integer value = messageMap.get(key);
-                                            //Log.d(value+"","s");
-                                            cc += value;
-                                        }
-                                        count = cc;
-                                        messageMap.clear();
-                                    }
-                                    nearby.setBadgeCount(count);
-                                }
-                            });
-                        } catch (Exception e) {
-                            e.getMessage();
-                        }
-                    }
-                }
-            }).start();
+            OwnerCheckMsgThread thread = new OwnerCheckMsgThread(this, mydata);
+            thread.start();
 
         } else if (mPosition.equals(waiter)) {
             if (!MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployeeService")) {
                 startService(new Intent(this, EmployeeService.class));
-                //Log.d("is start", "true");
             }
-            stopService(new Intent(this, EmployerService.class));
+            if (MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployerService")) {
+                stopService(new Intent(this, EmployerService.class));
+            }
             if (mOwnerEmail == null) {
-                EmployeeRefresh refresh = new EmployeeRefresh(this);
                 try {
-                    String result = refresh.execute().get();
-                    String[] results = result.split("/");
+                    String result = new TaskMethod(activity.getString(R.string.employee),
+                        "res_id="+restId, "UTF-8").execute().get();
+                    JSONArray ja = new JSONArray(result);
+                    JSONObject jo;
+                    String ownerEmail = null;
+                    String ownerName = null;
+                    for (int i = 0; i < ja.length(); i++) {
+                        jo = ja.getJSONObject(i);
+                        if (owner.equals(jo.getString("position"))) {
+                            String fname = jo.getString("first_name");
+                            String lname = jo.getString("last_name");
+                            ownerEmail = jo.getString("email").replace(".", "");
+                            ownerName = fname + " " + lname;
+                        }
+                    }
                     SharedPreferences.Editor editor = mydata.edit();
-                    editor.putString("ownerEmail", results[0]);
-                    editor.putString("ownerName", results[1]);
+                    editor.putString("ownerEmail", ownerEmail);
+                    editor.putString("ownerName", ownerName);
                     editor.apply();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Toast.makeText(this, "Occurred Temporary Error, Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
         count2 = mydata.getInt("countMsg", 0);
         nearby2.setBadgeCount(count2);
-
         // Set bottom menu for user depending on Owner or waiter.
         if (mPosition.equals(owner)) {
             bottomBarWaiter.setVisibility(View.GONE);
-            bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-                @Override
-                public void onTabSelected(int tabId) {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    switch (tabId) {
-                        case R.id.bottom_dashboard:
-                            setTransaction(transaction, new DashBoardFragment());
-                            break;
-                        case R.id.bottom_device:
-                            setTransaction(transaction, new WristBandFragment());
-                            break;
-                        case R.id.bottom_employee:
-                            setTransaction(transaction, new EmployeeFragment());
-                            break;
-                        case R.id.bottom_my:
-                            setTransaction(transaction, new MyFragment());
-                            break;
-                    }
-                }
-            });
+            bottomBar.setOnTabSelectListener(new AnyListener(this, mPosition));
         } else if (mPosition.equals(waiter)) {
             bottomBar.setVisibility(View.GONE);
-            bottomBarWaiter.setOnTabSelectListener(new OnTabSelectListener() {
-                @Override
-                public void onTabSelected(int tabId) {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    switch (tabId) {
-                        case R.id.bottom_dashboard:
-                            setTransaction(transaction, new EmployeeDashBoardFragment());
-                            break;
-                        case R.id.bottom_device:
-                            setTransaction(transaction, new WristBandFragment());
-                            break;
-                        case R.id.bottom_chatting:
-                            setTransaction(transaction, new OneOOneFragment());
-                            break;
-                        case R.id.bottom_my:
-                            setTransaction(transaction, new MyFragment());
-                            break;
-                    }
-                }
-            });
+            bottomBarWaiter.setOnTabSelectListener(new AnyListener(this, mPosition));
         }
-
     }
 
     public void onBackPressed() {
-
         if (System.currentTimeMillis() - mLastTimeBackPressed < 1500) {
             finish();
             return;
@@ -244,8 +168,7 @@ public class HomeActivity extends AppCompatActivity {
             if (mPosition.equals(waiter)) {
                 if (!MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployeeService")) {
                     startService(new Intent(this, EmployeeService.class));
-                } else Log.d("is start", "false");
-
+                }
             }
         } else {
             if (mPosition.equals(waiter)) {
@@ -254,66 +177,10 @@ public class HomeActivity extends AppCompatActivity {
                 }
             } else if (mPosition.equals(owner)) {
                 boolean isOn = MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployerService");
-                //Log.d("isOn", isOn + "");
                 if (isOn) {
                     stopService(new Intent(this, EmployerService.class));
-                    //Log.d("stopService", "EmployerService.class");
                 }
-                isOn = MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployerService");
-                // Log.d("isOn", isOn + "");
             }
         }
     }
-
-    public class EmployeeRefresh extends AsyncTask<String, Integer, String> {
-        String line;
-        String returnValue;
-        Context context;
-        String ownerEmail;
-        String ownerName;
-
-        EmployeeRefresh(Context ctx) {
-            this.context = ctx;
-        }
-
-        protected String doInBackground(String... params) {
-            try {
-                publishProgress();
-                String link = activity.getString(R.string.employee);
-                String data = URLEncoder.encode("res_id", "UTF-8") + "=" + URLEncoder.encode(restId, "UTF-8");
-                URL url = new URL(link);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write(data);
-                wr.flush();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                line = null;
-                while ((line = reader.readLine()) != null) {
-                    JSONArray ja = new JSONArray(line);
-                    JSONObject jo;
-                    for (int i = 0; i < ja.length(); i++) {
-                        jo = ja.getJSONObject(i);
-                        if ("owner".equals(jo.getString("position"))) {
-                            String fname = jo.getString("first_name");
-                            String lname = jo.getString("last_name");
-                            ownerEmail = jo.getString("email").replace(".", "");
-                            ownerName = fname + " " + lname;
-                            returnValue = ownerEmail + "/" + ownerName;
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.getMessage();
-            }
-            return returnValue;
-        }
-    }
-
-    private void setTransaction(FragmentTransaction transaction, Fragment fragment) {
-        transaction.replace(R.id.view_page, fragment);
-        transaction.commit();
-    }
-
 }

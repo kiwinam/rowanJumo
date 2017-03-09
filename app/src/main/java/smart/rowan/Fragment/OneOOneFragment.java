@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,16 +22,16 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-import smart.rowan.AnyListener;
-import smart.rowan.DataObserver;
 import smart.rowan.HomeActivity;
-import smart.rowan.MethodClass;
-import smart.rowan.MsgCheckThread;
 import smart.rowan.R;
 import smart.rowan.chatting.ChatData;
 import smart.rowan.chatting.EmployeeService;
 import smart.rowan.chatting.ViewHolder;
 import smart.rowan.databinding.FragmentOneOneBinding;
+import smart.rowan.etc.AnyListener;
+import smart.rowan.etc.DataObserver;
+import smart.rowan.etc.MethodClass;
+import smart.rowan.etc.MsgCheckThread;
 
 import static smart.rowan.HomeActivity.sUser;
 
@@ -51,12 +50,12 @@ public class OneOOneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         bind = DataBindingUtil.inflate(inflater, CONTENT_VIEW, container, false);
         View view = bind.getRoot();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("CHATTING");
+        MethodClass methodClass = new MethodClass();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Chatting with BOSS");
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         try {
             if (MethodClass.isServiceRunningCheck(getContext(), "smart.rowan.chatting.EmployeeService")) {
                 getActivity().stopService(new Intent(getContext(), EmployeeService.class));
-                Log.d("is stop", "true");
             }
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -65,7 +64,7 @@ public class OneOOneFragment extends Fragment {
             timeMap = new HashMap<>();
             size = 0;
             sp = getActivity().getSharedPreferences("SharedData", Context.MODE_PRIVATE);
-            mEmail = HomeActivity.sUser.getEmail().replace(".", "");
+            mEmail = methodClass.replaceComma(HomeActivity.sUser.getEmail());
             String user1Nick = sUser.getLastName() + " " + sUser.getFirstName();
             isExistMessage = true;
             MsgCheckThread thread = new MsgCheckThread(getActivity(), isExistMessage, bind.progressBar);
@@ -78,7 +77,7 @@ public class OneOOneFragment extends Fragment {
             FirebaseRecyclerAdapter<ChatData, ViewHolder> mFireBaseAdapter = new FirebaseRecyclerAdapter<ChatData,
                     ViewHolder>(
                     ChatData.class,
-                    R.layout.simple_list_item_1,
+                    R.layout.chat_row,
                     ViewHolder.class,
                     databaseReference.child(result)) {
 
@@ -118,7 +117,6 @@ public class OneOOneFragment extends Fragment {
                     }
                 }
             };
-            /**/
             mFireBaseAdapter.registerAdapterDataObserver(new DataObserver(mFireBaseAdapter, mLinearLayoutManager, bind.listView));
             bind.listView.setLayoutManager(mLinearLayoutManager);
             bind.listView.setAdapter(mFireBaseAdapter);
@@ -144,12 +142,8 @@ public class OneOOneFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            if (!MethodClass.isServiceRunningCheck(getContext(), "smart.rowan.chatting.EmployeeService")) {
-                getActivity().startService(new Intent(getContext(), EmployeeService.class));
-            }
-        } catch (Exception e) {
-            e.getMessage();
+        if (!MethodClass.isServiceRunningCheck(getContext(), "smart.rowan.chatting.EmployeeService")) {
+            getActivity().startService(new Intent(getContext(), EmployeeService.class));
         }
     }
 }

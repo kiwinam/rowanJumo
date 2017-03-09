@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,15 +27,16 @@ import java.util.Vector;
 
 import smart.rowan.Dialog.EmployeeMemoDialog;
 import smart.rowan.HomeActivity;
-import smart.rowan.MethodClass;
 import smart.rowan.R;
-import smart.rowan.TaskMethod;
 import smart.rowan.chatting.EmployeeAdapter;
 import smart.rowan.chatting.OneOOneActivity;
 import smart.rowan.chatting.User;
+import smart.rowan.etc.MethodClass;
+import smart.rowan.etc.TaskMethod;
 
 public class EmployeeFragment extends Fragment {
 
+    private static final String ERROR_MSG1 = "Occurred Temporary Error, Please Check Network and try again. - EM";
     Vector<User> user = new Vector<>();
     ListView employeeListView;
     String mId;
@@ -60,10 +63,10 @@ public class EmployeeFragment extends Fragment {
             jsonArrays = jsonArray;
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jo = jsonArray.getJSONObject(i);
-                String fname = jo.getString("first_name");
-                String lname = jo.getString("last_name");
+                String fName = jo.getString("first_name");
+                String lName = jo.getString("last_name");
                 String email = jo.getString("email");
-                if (!mId.equals(lname + " " + fname)) {
+                if (!mId.equals(lName + " " + fName)) {
                     int value = 0;
                     if (hashString != null) {
                         HashMap<String, Integer> messageMap = MethodClass.changeStringToHashMap(hashString);
@@ -74,7 +77,7 @@ public class EmployeeFragment extends Fragment {
                             value = 0;
                         }
                     }
-                    user.add(new User((lname + " " + fname), email, value));
+                    user.add(new User((lName + " " + fName), email, value));
                 }
             }
         } catch (Exception e) {
@@ -86,48 +89,59 @@ public class EmployeeFragment extends Fragment {
             employeeListView.setOnItemLongClickListener(longListener);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Employee");
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-            new Thread(new Runnable() {
+            /*Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    while (isEF) {
-                        try {
-                            Thread.sleep(333);
-                            user.clear();
-                            String hashString = myData.getString("messageMap", null);
-                            for (int i = 0; i < jsonArrays.length(); i++) {
-                                JSONObject jo = jsonArrays.getJSONObject(i);
-                                String fname = jo.getString("first_name");
-                                String lname = jo.getString("last_name");
-                                String email = jo.getString("email");
-                                if (!mId.equals(lname + " " + fname)) {
-                                    int value = 0;
-                                    if (hashString != null) {
-                                        HashMap<String, Integer> messageMap = MethodClass.changeStringToHashMap(hashString);
-                                        String emails = email.replace(".", "");
-                                        if (messageMap.containsKey(emails)) {
-                                            value = messageMap.get(emails);
-                                        } else {
-                                            value = 0;
+                    // 내용
+
+                }
+            }, 0);*/
+            try {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (isEF) {
+                            try {
+                                Thread.sleep(333);
+                                user.clear();
+                                String hashString = myData.getString("messageMap", null);
+                                for (int i = 0; i < jsonArrays.length(); i++) {
+                                    JSONObject jo = jsonArrays.getJSONObject(i);
+                                    String fname = jo.getString("first_name");
+                                    String lname = jo.getString("last_name");
+                                    String email = jo.getString("email");
+                                    if (!mId.equals(lname + " " + fname)) {
+                                        int value = 0;
+                                        if (hashString != null) {
+                                            HashMap<String, Integer> messageMap = MethodClass.changeStringToHashMap(hashString);
+                                            String emails = email.replace(".", "");
+                                            if (messageMap.containsKey(emails)) {
+                                                value = messageMap.get(emails);
+                                            } else {
+                                                value = 0;
+                                            }
                                         }
+                                        user.add(new User((lname + " " + fname), email, value));
                                     }
-                                    user.add(new User((lname + " " + fname), email, value));
                                 }
+                                Collections.sort(user, new MemberComparator());
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                });
+
+                            } catch (Exception e) {
+                                Log.d("errorMsg", e.getMessage());
                             }
-                            Collections.sort(user, new MemberComparator());
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adapter.notifyDataSetChanged();
-                                }
-                            });
-
-                        } catch (Exception e) {
-
                         }
                     }
-                }
-            }).start();
+                }).start();
+            } catch (Exception e) {
+                Toast.makeText(getContext(), ERROR_MSG1, Toast.LENGTH_SHORT).show();
+            }
         }
         return view;
     }
