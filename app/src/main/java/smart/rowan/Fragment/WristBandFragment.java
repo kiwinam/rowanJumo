@@ -256,7 +256,7 @@ public class WristBandFragment extends Fragment {
                             Log.d("request",request.toString()+".");
                             String result = new TaskMethod(getString(R.string.real_time_request_php),"rest_id="+HomeActivity.sRest.getRestId()+"&jsonData="+bellArray,"UTF-8").execute().get();
                             if(result==null){
-                                Log.d("result","null");
+                                Log.d("result","is null");
                             }else{
                                 Log.d("result",result.toString()+"..");
                             }
