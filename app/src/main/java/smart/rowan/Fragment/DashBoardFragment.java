@@ -16,8 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -62,6 +63,20 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
     public void onDateSelected(@NonNull MaterialCalendarView widget, @Nullable CalendarDay date, boolean selected) {
         String time = "";
         ArrayList<Entry> pieEntries = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+        labels.add("0");
+        labels.add("2");
+        labels.add("4");
+        labels.add("6");
+        labels.add("8");
+        labels.add("10");
+        labels.add("12");
+        labels.add("14");
+        labels.add("16");
+        labels.add("18");
+        labels.add("20");
+        labels.add("22");
+        labels.add("24");
         String pkg = getActivity().getPackageName();
         ArrayList<String> peakTime = new ArrayList<>();
         ArrayList<Integer> countCall = new ArrayList<>();
@@ -71,9 +86,10 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
         int i;
         try {
             mRestId = HomeActivity.sRest.getRestId();
-            String[] results = new TaskMethod(getString(R.string.dashboard_php), "rest_id=" +
-                    HomeActivity.sRest.getRestId() + "&timestamp=" + getSelectedDatesString(), "UTF-8").execute().get().split("/");
-
+            String result = new TaskMethod(getString(R.string.dashboard_php), "rest_id=" +
+                    HomeActivity.sRest.getRestId() + "&timestamp=" + getSelectedDatesString(), "UTF-8").execute().get();
+            String results[] = result.split("/");
+            Log.d("resilt", result);
             if (results[0].equals("null") || results[1].equals("null")) {
                 Toast.makeText(getActivity(), "No data on " + getSelectedDatesString(), Toast.LENGTH_SHORT).show();
                 //Snackbar.make(getActivity().findViewById(R.id.bottom_menu_snack), getSelectedDatesString()+"일의 데이터가 부족합니다.", Snackbar.LENGTH_SHORT).show();
@@ -112,14 +128,18 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
             String sec = time + "sec";
             mDashboardBinding.dashAverageTime.setText(sec);
 
-            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Pick time");
-            pieDataSet.setColors(new int[]{R.color.chart1, R.color.chart2, R.color.chart3, R.color.chart4, R.color.chart5}, this.getContext());
-
-            PieData thePieData = new PieData(peakTime, pieDataSet);
-            mDashboardBinding.pieChart.setData(thePieData);
-            mDashboardBinding.pieChart.animateX(1000);
-            mDashboardBinding.pieChart.setDescriptionTextSize(30);
-            mDashboardBinding.pieChart.setDescription(getSelectedDatesString());
+            //PieDataSet pieDataSet = new PieDataSet(pieEntries, "Pick time");
+            LineDataSet lineDataSet = new LineDataSet(pieEntries, "Peak time");
+            //lineDataSet.setColors(new int[]{R.color.chart1, R.color.chart2, R.color.chart3, R.color.chart4, R.color.chart5}, this.getContext());
+            lineDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            lineDataSet.setDrawCubic(true);
+            lineDataSet.setDrawFilled(true); //선아래로 색상표시
+            lineDataSet.setDrawValues(false);
+            LineData thePieData = new LineData(labels, lineDataSet);
+            mDashboardBinding.lineChart.setData(thePieData);
+            mDashboardBinding.lineChart.animateX(1000);
+            mDashboardBinding.lineChart.setDescriptionTextSize(30);
+            mDashboardBinding.lineChart.setDescription(getSelectedDatesString());
 
         } catch (Exception e) {
             e.printStackTrace();
