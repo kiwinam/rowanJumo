@@ -138,7 +138,7 @@ public class MethodClass {
     }
 
     public void setPeakTimeText(TextView peakTimeTextView, String peakTime, TextView peakTimeCountTextView, int count) {
-        peakTimeTextView.setText(peakTime);
+        peakTimeTextView.setText(peakTime+"시 ~ " + (Integer.parseInt(peakTime)+1)+"시");
         String called = String.valueOf(count) + " called";
         peakTimeCountTextView.setText(called);
         peakTimeTextView.setVisibility(View.VISIBLE);
