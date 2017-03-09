@@ -20,6 +20,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,14 +33,20 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
@@ -51,11 +59,16 @@ import java.util.ArrayList;
 import java.net.Socket;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import smart.rowan.Bell;
 import smart.rowan.HomeActivity;
 import smart.rowan.Initialize.DotActivity;
 import smart.rowan.R;
+import smart.rowan.RealTimeAdapter;
+import smart.rowan.RealTimeItem;
+import smart.rowan.etc.TaskMethod;
 
 
 public class WristBandFragment extends Fragment {
@@ -71,16 +84,27 @@ public class WristBandFragment extends Fragment {
     String position_id;
     MenuItem menu_config, menu_pair;
     /***************************************************************************/
-
+    ArrayList<String> mBellMac = new ArrayList<>();
+    ArrayList<String> mBellNum = new ArrayList<>();
+    ArrayList<String> mBellStatus = new ArrayList<>();
+    ArrayList<String> mWaiterName = new ArrayList<>();
+    ArrayList<String> mWaiterMac = new ArrayList<>();
+    ArrayList<String> mWaiterStatus = new ArrayList<>();
+    ArrayList<RealTimeItem> items = new ArrayList<>();
     String login_ID;                        //Get proper restaurant ID onCreateView
     TextView textResult, textDeviceCount, textWifiName, textSecurity;
+    ImageButton realTimeBtn;
     ArrayList<Node> listNote;
     AtomicInteger configured = new AtomicInteger(), finished = new AtomicInteger();
-
+    RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
+    Context mContext;
+    JSONArray jsonArray;
     /**********
      * Hotspot memory
      **********/
-    Boolean wasWifiOn;
+    Boolean wasWifiOn,isRealTime = true;
     WifiConfiguration oldWifiConfig = null;
 
     /**********************************/
@@ -110,20 +134,50 @@ public class WristBandFragment extends Fragment {
         menu_config = (MenuItem) view.findViewById(R.id.action_configuring);
         menu_pair = (MenuItem) view.findViewById(R.id.action_pairing);
 
-        textResult = (TextView) view.findViewById(R.id.result);
+        //textResult = (TextView) view.findViewById(R.id.result);
         textDeviceCount = (TextView) view.findViewById(R.id.devices);
         textWifiName = (TextView) view.findViewById(R.id.wifi_name);
         textSecurity = (TextView) view.findViewById(R.id.secured);
+        realTimeBtn = (ImageButton) view.findViewById(R.id.realTimeBtn);
+
+        //Recycler view
+        mContext = getContext();
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.realTimeRecyclerView);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new RealTimeAdapter(items,mContext);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        initRealTime();
+
+        realTimeSearch();
+
+
         view.findViewById(R.id.set_wifi).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dialogWifiConfig();
             }
         });
 
-        view.findViewById(R.id.initSettingBtn).setOnClickListener(new View.OnClickListener() {
+
+        realTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), DotActivity.class));
+                if(isRealTime){
+                    realTimeBtn.setImageResource(R.drawable.ic_pause_black_24dp);
+                    isRealTime = false;
+                }else{
+                    realTimeBtn.setImageResource(R.drawable.ic_loop_black_24dp);
+                    isRealTime = true;
+                    realTimeSearch();
+
+                }
+
             }
         });
 
@@ -138,6 +192,90 @@ public class WristBandFragment extends Fragment {
         setHasOptionsMenu(true);
 
     }
+
+    @Override
+    public void onPause() {
+        isRealTime = false;
+        super.onPause();
+    }
+
+    private void initRealTime(){
+
+        try {
+            String result = new TaskMethod(getString(R.string.get_bell_php),"restId="+rest_ID,"UTF-8").execute().get();
+            String results[] = result.split("/");
+            jsonArray = new JSONArray(results[0]);
+            for(int i=0; i<jsonArray.length();i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                //Bell bell = new Bell(jsonObject.getString("device_id"),"table "+jsonObject.getString("table_number"),"wait");
+                mBellMac.add(jsonObject.getString("device_id"));
+                mBellNum.add("table "+jsonObject.getString("table_number"));
+                mBellStatus.add("wait");
+                items.add(new RealTimeItem(R.drawable.ic_notifications_black_48dp,mBellNum.get(i),mBellStatus.get(i)));
+            }
+            jsonArray = new JSONArray(results[1]);
+            for(int i=0; i<jsonArray.length();i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                mWaiterMac.add(jsonObject.getString("wristband_id"));
+                mWaiterName.add(jsonObject.getString("first_name")+" "+jsonObject.getString("last_name"));
+                mWaiterStatus.add("Ready");
+                items.add(new RealTimeItem(R.drawable.ic_watch_black_48dp, mWaiterName.get(i), mWaiterStatus.get(i)));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void realTimeSearch(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                    while(isRealTime){
+                        try {
+                            Thread.sleep(1000);
+                            JSONObject request = new JSONObject();
+
+                            JSONArray bellArray = new JSONArray();
+
+                            for(int i = 0 ; i<mBellMac.size();i++){
+                                JSONObject bell = new JSONObject();
+                                bell.put("mac",mBellMac.get(i));
+                                bell.put("status",mBellStatus.get(i));
+                                bellArray.put(bell);
+                            }
+                            request.put("bell",bellArray);
+
+                            JSONArray waiterArray = new JSONArray();
+                            for(int i=0; i<mWaiterMac.size();i++){
+                                JSONObject waiter = new JSONObject();
+                                waiter.put("mac",mWaiterMac.get(i));
+                                waiter.put("status",mWaiterStatus.get(i));
+                                waiterArray.put(waiter);
+                            }
+                            request.put("waiter",waiterArray);
+                            Log.d("request",request.toString()+".");
+                            String result = new TaskMethod(getString(R.string.real_time_request_php),"rest_id="+HomeActivity.sRest.getRestId()+"&jsonData="+bellArray,"UTF-8").execute().get();
+                            if(result==null){
+                                Log.d("result","null");
+                            }else{
+                                Log.d("result",result.toString()+"..");
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                }
+
+            }
+        }).start();
+
+    }
+
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -175,6 +313,8 @@ public class WristBandFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     private void readAddresses() {
         listNote.clear();
@@ -380,11 +520,11 @@ public class WristBandFragment extends Fragment {
                 alert.setPositiveButton("OK", null);
                 alert.show();
 
-                textResult.setText("");
+              /*  textResult.setText("");
                 for (int i = 0; i < finished.get(); i++) {
                     textResult.append(listNote.get(i).toString());
                     textResult.append("\n");
-                }
+                }*/
                 progressBar.dismiss();
                 textDeviceCount.setText(Integer.toString(dev_count[0] * 256 + dev_count[1]));
             }

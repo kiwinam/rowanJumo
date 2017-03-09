@@ -20,6 +20,10 @@ import java.util.HashMap;
 
 import smart.rowan.chatting.EmployeeService;
 import smart.rowan.chatting.EmployerService;
+import smart.rowan.etc.AnyListener;
+import smart.rowan.etc.MethodClass;
+import smart.rowan.etc.OwnerCheckMsgThread;
+import smart.rowan.etc.TaskMethod;
 
 public class HomeActivity extends AppCompatActivity {
     public static HomeActivity activity;

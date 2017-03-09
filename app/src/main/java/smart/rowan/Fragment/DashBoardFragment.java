@@ -136,10 +136,10 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
             lineDataSet.setDrawFilled(true); //선아래로 색상표시
             lineDataSet.setDrawValues(false);
             LineData thePieData = new LineData(labels, lineDataSet);
-            mDashboardBinding.lineChart.setData(thePieData);
-            mDashboardBinding.lineChart.animateX(1000);
-            mDashboardBinding.lineChart.setDescriptionTextSize(30);
-            mDashboardBinding.lineChart.setDescription(getSelectedDatesString());
+            //mDashboardBinding.lineChart.setData(thePieData);
+            //mDashboardBinding.lineChart.animateX(1000);
+            //mDashboardBinding.lineChart.setDescriptionTextSize(30);
+            //mDashboardBinding.lineChart.setDescription(getSelectedDatesString());
 
         } catch (Exception e) {
             e.printStackTrace();

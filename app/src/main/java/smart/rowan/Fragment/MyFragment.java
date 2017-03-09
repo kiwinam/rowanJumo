@@ -170,7 +170,7 @@ public class MyFragment extends Fragment {
         try {
             MyData myData = new MyData(restName, restAddress, PhoneNumberUtils.formatNumber(restPhone), firstName, lastName, PhoneNumberUtils.formatNumber(phone),
                                         birthday, email, address, startDate, endDate, firstName.toUpperCase() + " " + lastName.toUpperCase());
-            mMyBinding.setMyData(myData);
+            //mMyBinding.setMyData(myData);
 
         } catch (NullPointerException e) {
             Toast.makeText(getContext(), "Occurred error for get  data.", Toast.LENGTH_SHORT).show();

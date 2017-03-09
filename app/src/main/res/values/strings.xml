@@ -29,6 +29,8 @@
     <string name="average_test_jsp">http://creativerowan.com/test/getAverageTime.jsp</string>
     <string name="dashboard_php">http://165.132.110.130/rowan/dashboard.php</string>
     <string name="employee_dashboard_php">http://165.132.110.130/rowan/employee_dashboard.php</string>
+    <string name="real_time_request_php">http://165.132.110.130/rowan/realtime_request.php</string>
+    <string name="get_bell_php">http://165.132.110.130/rowan/get_bell.php</string>
 
 
 

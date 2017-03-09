@@ -134,7 +134,7 @@ public class EmployeeFragment extends Fragment {
                                 });
 
                             } catch (Exception e) {
-                                Log.d("errorMsg", e.getMessage());
+                                //Log.d("errorMsg", e.getMessage());
                             }
                         }
                     }
