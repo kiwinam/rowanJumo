@@ -43,7 +43,7 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
     private MethodClass methodClass;
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     FragmentDashboardBinding mDashboardBinding;
-
+    private String aaa;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mDashboardBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
