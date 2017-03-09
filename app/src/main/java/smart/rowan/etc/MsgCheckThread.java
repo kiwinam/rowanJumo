@@ -1,4 +1,4 @@
-package smart.rowan;
+package smart.rowan.etc;
 
 
 import android.app.Activity;

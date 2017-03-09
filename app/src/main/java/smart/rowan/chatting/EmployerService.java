@@ -7,13 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -27,14 +24,16 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 
 import smart.rowan.HomeActivity;
-import smart.rowan.MethodClass;
-import smart.rowan.R;
+import smart.rowan.etc.MethodClass;
 
 public class EmployerService extends Service {
     private EmployerService service;
     public static NotificationManager mNotificationManager;
+    private static final String WAITER = "WAITER";
+    private static final String ERROR_MSG = "Occurred temporary error. Please check network stat and try again. - employerService";
     private String mId;
     private long lastKey;
+    private MethodClass methodClass;
     private SharedPreferences myData;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -74,12 +73,13 @@ public class EmployerService extends Service {
             inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             toast = new Toast(getApplicationContext());
             service = this;
-            mId = myData.getString("email", "noEmail").replace(".", "");
+            methodClass = new MethodClass();
+            mId = methodClass.replaceComma(myData.getString("email", "noEmail"));
             lastKey = myData.getLong("oLastMsg", 0L);
 
             databaseReference.addValueEventListener(parentListener);
         } catch (Exception e) {
-            Toast.makeText(this, "Temporary Exception occurred!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ERROR_MSG, Toast.LENGTH_SHORT).show();
         }
         return START_STICKY;
     }
@@ -135,31 +135,14 @@ public class EmployerService extends Service {
                     editor.putString("messageMap", hashMapString);
                     editor.apply();
                     mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    View toastLayout = inflater.inflate(R.layout.toast_message, null);
-                    TextView textView = (TextView) toastLayout.findViewById(R.id.senderName);
-                    textView.setText(chatData.getMyName());
-                    TextView textView2 = (TextView) toastLayout.findViewById(R.id.senderText);
-                    textView2.setText(msg);
-                    toast.cancel();
-                    toast = new Toast(getApplicationContext());
-                    toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.TOP, 0, 400);
-                    toast.setDuration(Toast.LENGTH_SHORT);
-                    toast.setView(toastLayout);
-                    toast.show();
-                    //  Log.d("a", "a");
+                    if (Build.VERSION.SDK_INT <= 23) {
+                        toast = methodClass.showToastMsg(inflater, chatData.getMyName(), toast, msg, getApplicationContext());
+                    }
                     Intent intent = new Intent(service, HomeActivity.class);
                     PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
                     Resources resources = getResources();
-                    builder.setContentTitle("※ New Message From WAITER")
-                            .setContentText(chatData.getMessage()).setTicker("New Message From ROWAN")
-                            .setSmallIcon(R.drawable.ic_watch_white_18dp)
-                            .setContentIntent(pendingIntent)
-                            .setAutoCancel(true)
-                            .setTicker("※ New Message From ROWAN")
-                            .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
-                            .setWhen(System.currentTimeMillis());
-
+                    methodClass.showNotificationMsg(builder, chatData.getMessage(), pendingIntent, resources, WAITER);
                     mNotificationManager.notify(777, builder.build());
                 }
             }

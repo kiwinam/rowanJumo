@@ -1,4 +1,4 @@
-package smart.rowan;
+package smart.rowan.etc;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

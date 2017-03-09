@@ -1,4 +1,4 @@
-package smart.rowan;
+package smart.rowan.etc;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -18,33 +18,22 @@ public class TaskMethod extends AsyncTask<String, Void, String> {
         this.encodeType = encodeType;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    private String getsId() {
-        return sId;
-    }
-
-    private String getEncodeType() {
-        return encodeType;
-    }
-
-    private String str, sResult;
+    private String sResult;
 
     @Override
     protected String doInBackground(String[] sId) {
+        String str;
         try {
-            URL url = new URL(getUrl());
+            URL url = new URL(this.url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestMethod("POST");
             conn.connect();
-            OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
-            osw.write(getsId());
+            OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream(), encodeType);
+            osw.write(this.sId);
             osw.flush();
             if (conn.getResponseCode() == conn.HTTP_OK) {
-                InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), getEncodeType());
+                InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), encodeType);
                 BufferedReader reader = new BufferedReader(tmp);
                 StringBuffer buffer = new StringBuffer();
                 while ((str = reader.readLine()) != null) {
@@ -55,8 +44,6 @@ public class TaskMethod extends AsyncTask<String, Void, String> {
             } else {
                 Log.i("통신결과", conn.getResponseMessage() + "/" + conn.getErrorStream());
             }
-
-            Log.i("통신결과", conn.getResponseCode() + "");
         } catch (Exception e) {
             e.printStackTrace();
         }

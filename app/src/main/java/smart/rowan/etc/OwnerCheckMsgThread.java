@@ -1,4 +1,4 @@
-package smart.rowan;
+package smart.rowan.etc;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -11,10 +11,11 @@ import static smart.rowan.HomeActivity.count;
 import static smart.rowan.HomeActivity.isHome;
 import static smart.rowan.HomeActivity.nearby;
 
-class OwnerCheckMsgThread extends Thread {
+public class OwnerCheckMsgThread extends Thread {
     private Activity activity;
     private SharedPreferences myData;
-    OwnerCheckMsgThread(Activity activity, SharedPreferences myData){
+
+    public OwnerCheckMsgThread(Activity activity, SharedPreferences myData){
         this.activity = activity;
         this.myData = myData;
     }

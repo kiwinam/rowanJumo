@@ -15,6 +15,7 @@ import android.widget.Toast;
 import smart.rowan.chatting.EmployeeService;
 import smart.rowan.chatting.EmployerService;
 import smart.rowan.databinding.ActivityLoginBinding;
+import smart.rowan.etc.MethodClass;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private long mLastTimeBackPressed;
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String sessionCheck;
     ActivityLoginBinding loginBinding;
     InputMethodManager imm;
+    private static final String BACK_BTN_TOUCH_MSG = "when touched , it turns off.";
 
     @Override
     public void onClick(View v) {
@@ -52,8 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         // Check login session
-        boolean is = MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployerService");
-        if (is) {
+        if (MethodClass.isServiceRunningCheck(this, "smart.rowan.chatting.EmployerService")) {
             stopService(new Intent(this, EmployerService.class));
         }
         stopService(new Intent(this, EmployeeService.class));
@@ -127,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
         mLastTimeBackPressed = System.currentTimeMillis();
-        Toast.makeText(this, "when touched , it turns off.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, BACK_BTN_TOUCH_MSG, Toast.LENGTH_SHORT).show();
     }
 
 }

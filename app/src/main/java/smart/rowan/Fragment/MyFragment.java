@@ -52,6 +52,7 @@ import smart.rowan.HomeActivity;
 import smart.rowan.LoginActivity;
 import smart.rowan.R;
 import smart.rowan.databinding.FragmentMyBinding;
+import smart.rowan.etc.MyData;
 
 import static android.app.Activity.RESULT_OK;
 import static smart.rowan.HomeActivity.sRest;
@@ -114,7 +115,6 @@ public class MyFragment extends Fragment {
         //set data
         setMyData(sRest.getRestName(), sRest.getRestAddress(), sRest.getRestPhone(), sUser.getFirstName(), sUser.getLastName(),
                 sUser.getPhone(), sUser.getBirthday(), sUser.getEmail(), sUser.getAddress(), sUser.getStartDate(), sUser.getEndDate());
-        Log.d("rest Phone", sRest.getRestPhone() + "..");
         // Signout and clear the session.
         if (!img.equals("0")) {
             Bitmap bitmap = decodeBase64(img);
@@ -143,6 +143,7 @@ public class MyFragment extends Fragment {
                         break;
                 }
                 tmpHashMap.put(sUser.getId(), lastMsg);
+                Log.d("sUserId = " + sUser.getEmail(), "lastMsg" + lastMsg);
                 Gson gson = new Gson();
                 String hashMapString = gson.toJson(tmpHashMap);
                 SharedPreferences tmpData = getActivity().getSharedPreferences("tmpData", Context.MODE_PRIVATE);
@@ -164,20 +165,15 @@ public class MyFragment extends Fragment {
     }
 
 
-    public void setMyData(String restName, String restAddress, String restPhone, String firstName, String lastName, String phone, String birthday, String email, String address, String startDate, String endDate) {
+    public void setMyData(String restName, String restAddress, String restPhone, String firstName,
+                          String lastName, String phone, String birthday, String email, String address, String startDate, String endDate) {
         try {
-            mMyBinding.myContentRestaurantName.setText(restName);
-            mMyBinding.myContentRestaurantAddr.setText(restAddress);
-            mMyBinding.myContentRestaurantCall.setText(PhoneNumberUtils.formatNumber(restPhone));
-            mMyBinding.myFullName.setText(firstName.toUpperCase() + " " + lastName.toUpperCase());
-            mMyBinding.myContentPhoneTextView.setText(PhoneNumberUtils.formatNumber(phone));
-            mMyBinding.myContentBirthday.setText(birthday);
-            mMyBinding.myContentEmailTextView.setText(email);
-            mMyBinding.myContentAddressTextView.setText(address);
-            mMyBinding.myContentStartDateTv.setText(startDate);
-            mMyBinding.myContentEndDateTv.setText(endDate);
+            MyData myData = new MyData(restName, restAddress, PhoneNumberUtils.formatNumber(restPhone), firstName, lastName, PhoneNumberUtils.formatNumber(phone),
+                                        birthday, email, address, startDate, endDate, firstName.toUpperCase() + " " + lastName.toUpperCase());
+            mMyBinding.setMyData(myData);
+
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            Toast.makeText(getContext(), "Occurred error for get  data.", Toast.LENGTH_SHORT).show();
         }
     }
 

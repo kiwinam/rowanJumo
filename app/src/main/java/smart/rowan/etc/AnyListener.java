@@ -1,4 +1,4 @@
-package smart.rowan;
+package smart.rowan.etc;
 
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -20,6 +20,7 @@ import smart.rowan.Fragment.EmployeeFragment;
 import smart.rowan.Fragment.MyFragment;
 import smart.rowan.Fragment.OneOOneFragment;
 import smart.rowan.Fragment.WristBandFragment;
+import smart.rowan.R;
 import smart.rowan.chatting.ChatData;
 
 
@@ -30,7 +31,7 @@ public class AnyListener implements OnTabSelectListener, View.OnClickListener {
     private String myEmail, youEmail, myNick, result;
     private DatabaseReference databaseReference;
 
-    AnyListener(AppCompatActivity activity, String position) {
+    public AnyListener(AppCompatActivity activity, String position) {
         this.activity = activity;
         this.position = position;
     }

@@ -1,5 +1,6 @@
 package smart.rowan.Fragment;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,14 +31,15 @@ import java.util.Calendar;
 
 import smart.rowan.HomeActivity;
 import smart.rowan.R;
-import smart.rowan.TaskMethod;
 import smart.rowan.databinding.FragmentDashboardBinding;
+import smart.rowan.etc.MethodClass;
+import smart.rowan.etc.TaskMethod;
 
 
 public class DashBoardFragment extends Fragment implements OnDateSelectedListener {
 
     String mRestId;
-
+    private MethodClass methodClass;
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     FragmentDashboardBinding mDashboardBinding;
 
@@ -45,36 +47,15 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mDashboardBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
         View view = mDashboardBinding.getRoot();
+        methodClass = new MethodClass();
         mDashboardBinding.calendarView.setOnDateChangedListener(this);
         mDashboardBinding.calendarView.state().edit().setMaximumDate(Calendar.getInstance().getTime()).commit();
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mDashboardBinding.calendarView.getWindowToken(), 0);
         //Set title
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Dashboard");
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return view;
-    }
-
-    private void initPeakTimeText(TextView peakTimeTextView, TextView peakTimeCountTextView) {
-        peakTimeTextView.setVisibility(View.GONE);
-        peakTimeCountTextView.setVisibility(View.GONE);
-    }
-
-    private void setPeakTimeText(TextView peakTimeTextView, String peakTime, TextView peakTimeCountTextView, int count) {
-        peakTimeTextView.setText(peakTime);
-        String called = String.valueOf(count) + " called";
-        peakTimeCountTextView.setText(called);
-        peakTimeTextView.setVisibility(View.VISIBLE);
-        peakTimeCountTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void setTableCountText(TextView tableNumberTextView, String peakTime, TextView callCountTextView, int count) {
-        String called = String.valueOf(count) + "called";
-        String peakTimes = "Number " + peakTime;
-        tableNumberTextView.setText(peakTimes);
-        callCountTextView.setText(called);
-        tableNumberTextView.setVisibility(View.VISIBLE);
-        callCountTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -90,7 +71,8 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
         int i;
         try {
             mRestId = HomeActivity.sRest.getRestId();
-            String[] results = new TaskMethod(getString(R.string.dashboard_php), "rest_id=" + HomeActivity.sRest.getRestId() + "&timestamp=" + getSelectedDatesString(), "UTF-8").execute().get().split("/");
+            String[] results = new TaskMethod(getString(R.string.dashboard_php), "rest_id=" +
+                    HomeActivity.sRest.getRestId() + "&timestamp=" + getSelectedDatesString(), "UTF-8").execute().get().split("/");
 
             if (results[0].equals("null") || results[1].equals("null")) {
                 Toast.makeText(getActivity(), "No data on " + getSelectedDatesString(), Toast.LENGTH_SHORT).show();
@@ -106,7 +88,7 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
                     tableCount.add(Integer.parseInt(jsonObject.getString("table_served_count")));
                     int tableNumberId = getResources().getIdentifier("dashTableNumberTv" + (index + 1), "id", pkg);
                     int tableCountId = getResources().getIdentifier("dashTableCountTv" + (index + 1), "id", pkg);
-                    setTableCountText((TextView) getActivity().findViewById(tableNumberId), tableNum.get(index), (TextView) getActivity().findViewById(tableCountId), tableCount.get(index));
+                    methodClass.setTableCountText((TextView) getActivity().findViewById(tableNumberId), tableNum.get(index), (TextView) getActivity().findViewById(tableCountId), tableCount.get(index));
                 }
                 for (i = 0; i < peakTimeArray.length(); i++) {
                     JSONObject jsonObject = peakTimeArray.getJSONObject(i);
@@ -114,7 +96,7 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
                     countCall.add(Integer.parseInt(jsonObject.getString("number_of_calls")));//table_number , table_served_count
                     int pickTimeId = getResources().getIdentifier("dashPickTimeTv" + (i + 1), "id", pkg);
                     int countCallId = getResources().getIdentifier("dashPickTimeCountTv" + (i + 1), "id", pkg);
-                    setPeakTimeText((TextView) getActivity().findViewById(pickTimeId), peakTime.get(i), (TextView) getActivity().findViewById(countCallId), countCall.get(i));
+                    methodClass.setPeakTimeText((TextView) getActivity().findViewById(pickTimeId), peakTime.get(i), (TextView) getActivity().findViewById(countCallId), countCall.get(i));
 
                     pieEntries.add(new Entry(countCall.get(i), i));
                     Log.d("hour_by_30min ", jsonObject.getString("hour_by_30min"));
@@ -123,7 +105,7 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
                 for (int j = i; j < 5; j++) {
                     int pickTimeId = getResources().getIdentifier("dashPickTimeTv" + (j + 1), "id", pkg);
                     int countCallId = getResources().getIdentifier("dashPickTimeCountTv" + (j + 1), "id", pkg);
-                    initPeakTimeText((TextView) getActivity().findViewById(pickTimeId), (TextView) getActivity().findViewById(countCallId));
+                    methodClass.initPeakTimeText((TextView) getActivity().findViewById(pickTimeId), (TextView) getActivity().findViewById(countCallId));
                 }
 
             }

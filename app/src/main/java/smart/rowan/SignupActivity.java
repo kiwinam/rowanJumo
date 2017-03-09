@@ -146,7 +146,6 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             if (!binding.checkAgree.isChecked()) {
                 Toast.makeText(getApplicationContext(), "Please check the term of service.", Toast.LENGTH_LONG).show();
-                // go to bottom side to show checkbox (agree the term).
                 ScrollView sv = (ScrollView) findViewById(R.id.signupScrollView);
                 sv.scrollTo(0, sv.getBottom());
             } else {

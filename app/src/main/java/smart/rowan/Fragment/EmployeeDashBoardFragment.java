@@ -1,10 +1,10 @@
 package smart.rowan.Fragment;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +26,15 @@ import java.util.Date;
 import smart.rowan.AttendanceDayDecorator;
 import smart.rowan.HomeActivity;
 import smart.rowan.R;
-import smart.rowan.TaskMethod;
 import smart.rowan.TodayDecorator;
 import smart.rowan.databinding.FragmentEmployeeDashboardBinding;
+import smart.rowan.etc.TaskMethod;
 
 public class EmployeeDashBoardFragment extends Fragment implements OnDateSelectedListener, View.OnClickListener, OnMonthChangedListener {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     FragmentEmployeeDashboardBinding mEmployeeDashBinding;
+    private static final String DID_NOT_WORK = "didn't work.";
+    private static final String DIDNT_WORK_MSG = "You didn't work that day";
     Date date;
 
     @Override
@@ -44,7 +46,7 @@ public class EmployeeDashBoardFragment extends Fragment implements OnDateSelecte
         mEmployeeDashBinding.calendarView.setOnMonthChangedListener(this);
         mEmployeeDashBinding.calendarView.addDecorator(new TodayDecorator());
         getTotalDays(mEmployeeDashBinding.calendarView.getCurrentDate());
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEmployeeDashBinding.calendarView.getWindowToken(), 0);
         return view;
     }
@@ -54,17 +56,18 @@ public class EmployeeDashBoardFragment extends Fragment implements OnDateSelecte
         try {
             String result = new TaskMethod(getString(R.string.dashboard_php), "restId=" + HomeActivity.sRest.getRestId() + "&userId=" + HomeActivity.sUser.getId() + "&date=" + getSelectedDatesString(), "UTF-8").execute().get();
             if (result.equals("NO DATA FOUND.")) {
-                Log.d("no", "data receive");
-                Toast.makeText(getActivity(), "You didn't work that day", Toast.LENGTH_SHORT).show();
-                mEmployeeDashBinding.hoursTextView.setText("Didn't work");
-                mEmployeeDashBinding.totalCallsTextView.setText("Didn't work");
-                mEmployeeDashBinding.averageTextView.setText("Didn't work");
+                Toast.makeText(getActivity(), DIDNT_WORK_MSG, Toast.LENGTH_SHORT).show();
+                mEmployeeDashBinding.hoursTextView.setText(DID_NOT_WORK);
+                mEmployeeDashBinding.totalCallsTextView.setText(DID_NOT_WORK);
+                mEmployeeDashBinding.averageTextView.setText(DID_NOT_WORK);
                 //Snackbar.make(getActivity().findViewById(R.id.bottom_menu_snack),"You didn't work that day",Snackbar.LENGTH_SHORT).show();
             } else {
                 JSONObject jsonResult = new JSONObject(result);
                 mEmployeeDashBinding.hoursTextView.setText(jsonResult.getString("HOURS"));
-                mEmployeeDashBinding.totalCallsTextView.setText(jsonResult.getString("COUNT") + " calls");
-                mEmployeeDashBinding.averageTextView.setText(jsonResult.getString("AVG") + " sec");
+                String calls = jsonResult.getString("COUNT") + " calls";
+                mEmployeeDashBinding.totalCallsTextView.setText(calls);
+                String sec = jsonResult.getString("AVG") + " sec";
+                mEmployeeDashBinding.averageTextView.setText(sec);
             }
 
         } catch (Exception e) {
@@ -117,7 +120,8 @@ public class EmployeeDashBoardFragment extends Fragment implements OnDateSelecte
                 }
             }
             JSONObject jsonObjectResult = new JSONObject(result[j + 1]);
-            mEmployeeDashBinding.totalDaysTextView.setText(jsonObjectResult.getString("days") + " days");
+            String days = jsonObjectResult.getString("days") + " days";
+            mEmployeeDashBinding.totalDaysTextView.setText(days);
         } catch (Exception e) {
             e.printStackTrace();
         }

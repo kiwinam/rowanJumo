@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -67,23 +66,20 @@ public class RestAuthentication extends AsyncTask<String, Void, String> {
                 userId = param[5];
 
                 String rest_link = activity.getString(R.string.create_rest);
-                String data = URLEncoder.encode("restid", "UTF-8") + "=" + URLEncoder.encode(restId, "UTF-8") + "&" +
-                        URLEncoder.encode("restname", "UTF-8") + "=" + URLEncoder.encode(restName, "UTF-8") + "&" +
-                        URLEncoder.encode("restphone", "UTF-8") + "=" + URLEncoder.encode(restPhone, "UTF-8") + "&" +
-                        URLEncoder.encode("restaddr", "UTF-8") + "=" + URLEncoder.encode(restAddress, "UTF-8") + "&" +
-                        URLEncoder.encode("restdate", "UTF-8") + "=" + URLEncoder.encode(registeredDate, "UTF-8") + "&" +
-                        URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(userId, "UTF-8");
+                String data = "restid=" + restId + "&restname=" + restName +
+                        "&restphone=" + restPhone + "&restaddr=" + restAddress +
+                        "&restdate=" + registeredDate + "&userid=" + userId;
 
                 URL url = new URL(rest_link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 
                 wr.write(data);
                 wr.flush();
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
                 StringBuilder sb = new StringBuilder();
                 String line;
@@ -109,30 +105,25 @@ public class RestAuthentication extends AsyncTask<String, Void, String> {
                 restId = param[1];
                 userId = param[2];
                 String link = activity.getString(R.string.join_rest);
-                String data = URLEncoder.encode("joinrestid", "UTF-8") + "=" + URLEncoder.encode(restId, "UTF-8") + "&" +
-                        URLEncoder.encode("joinuserid", "UTF-8") + "=" + URLEncoder.encode(userId, "UTF-8");
+                String data = "joinrestid=" + restId + "&joinuserid=" + userId;
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 
                 wr.write(data);
                 wr.flush();
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
                 StringBuilder sb = new StringBuilder();
                 String line;
 
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
-                    Log.d("sb.toString", sb.toString());
                     if (result.equals(line)) {
-                        Log.d("JOIN SUCCESS: ", line);
                         position = reader.readLine();
-                    } else {
-                        Log.d("JOIN FAILED: ", line);
                     }
                     break;
                 }
