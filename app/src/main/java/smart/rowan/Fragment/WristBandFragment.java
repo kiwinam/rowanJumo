@@ -101,6 +101,7 @@ public class WristBandFragment extends Fragment {
     RecyclerView.LayoutManager mLayoutManager;
     Context mContext;
     JSONArray jsonArray;
+    int position;
     /**********
      * Hotspot memory
      **********/
@@ -169,10 +170,10 @@ public class WristBandFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(isRealTime){
-                    realTimeBtn.setImageResource(R.drawable.ic_pause_black_24dp);
+                    realTimeBtn.setImageResource(R.drawable.ic_loop_black_24dp);
                     isRealTime = false;
                 }else{
-                    realTimeBtn.setImageResource(R.drawable.ic_loop_black_24dp);
+                    realTimeBtn.setImageResource(R.drawable.ic_pause_black_24dp);
                     isRealTime = true;
                     realTimeSearch();
 
@@ -200,27 +201,40 @@ public class WristBandFragment extends Fragment {
     }
 
     private void initRealTime(){
-
+        int i=0;
         try {
             String result = new TaskMethod(getString(R.string.get_bell_php),"restId="+rest_ID,"UTF-8").execute().get();
             String results[] = result.split("/");
             jsonArray = new JSONArray(results[0]);
-            for(int i=0; i<jsonArray.length();i++){
+            for(; i<3;i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 //Bell bell = new Bell(jsonObject.getString("device_id"),"table "+jsonObject.getString("table_number"),"wait");
                 mBellMac.add(jsonObject.getString("device_id"));
                 mBellNum.add("table "+jsonObject.getString("table_number"));
-                mBellStatus.add("wait");
+                mBellStatus.add("standby");
                 items.add(new RealTimeItem(R.drawable.ic_notifications_black_48dp,mBellNum.get(i),mBellStatus.get(i)));
             }
             jsonArray = new JSONArray(results[1]);
-            for(int i=0; i<jsonArray.length();i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                mWaiterMac.add(jsonObject.getString("wristband_id"));
-                mWaiterName.add(jsonObject.getString("first_name")+" "+jsonObject.getString("last_name"));
-                mWaiterStatus.add("Ready");
-                items.add(new RealTimeItem(R.drawable.ic_watch_black_48dp, mWaiterName.get(i), mWaiterStatus.get(i)));
-            }
+            /*for(; i<6;i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i-3);
+                //mBellMac.add(jsonObject.getString("wristband_id"));
+                mBellMac.add("7c:ec:79:06:c0:be");
+                mBellNum.add(jsonObject.getString("first_name")+" "+jsonObject.getString("last_name"));
+                mBellStatus.add("Ready");
+                items.add(new RealTimeItem(R.drawable.ic_watch_black_48dp, mBellNum.get(i), mBellStatus.get(i)));
+            }*/
+            mBellMac.add("7c:ec:79:06:c0:be");
+            mBellNum.add("Kelly Newton");
+            mBellStatus.add("Ready");
+            items.add(new RealTimeItem(R.drawable.ic_watch_black_48dp, mBellNum.get(3), mBellStatus.get(3)));
+            mBellMac.add("7c:ec:79:06:d5:0a");
+            mBellNum.add("Branden Lamb");
+            mBellStatus.add("Ready");
+            items.add(new RealTimeItem(R.drawable.ic_watch_black_48dp, mBellNum.get(4), mBellStatus.get(4)));
+            mBellMac.add("7c:ec:79:06:b8:7f");
+            mBellNum.add("Lucas Holguin");
+            mBellStatus.add("Ready");
+            items.add(new RealTimeItem(R.drawable.ic_watch_black_48dp, mBellNum.get(5), mBellStatus.get(5)));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -231,13 +245,14 @@ public class WristBandFragment extends Fragment {
             @Override
             public void run() {
                     while(isRealTime){
+                        position = 0;
                         try {
                             Thread.sleep(1000);
                             JSONObject request = new JSONObject();
 
                             JSONArray bellArray = new JSONArray();
 
-                            for(int i = 0 ; i<mBellMac.size();i++){
+                            for(int i = 0 ; i< 3;i++){
                                 JSONObject bell = new JSONObject();
                                 bell.put("mac",mBellMac.get(i));
                                 bell.put("status",mBellStatus.get(i));
@@ -246,20 +261,72 @@ public class WristBandFragment extends Fragment {
                             request.put("bell",bellArray);
 
                             JSONArray waiterArray = new JSONArray();
-                            for(int i=0; i<mWaiterMac.size();i++){
+                            for(int i=3; i< 6;i++){
                                 JSONObject waiter = new JSONObject();
-                                waiter.put("mac",mWaiterMac.get(i));
-                                waiter.put("status",mWaiterStatus.get(i));
+                                waiter.put("mac",mBellMac.get(i));
+                                waiter.put("status",mBellStatus.get(i));
                                 waiterArray.put(waiter);
                             }
                             request.put("waiter",waiterArray);
-                            Log.d("request",request.toString()+".");
-                            String result = new TaskMethod(getString(R.string.real_time_request_php),"rest_id="+HomeActivity.sRest.getRestId()+"&jsonData="+bellArray,"UTF-8").execute().get();
-                            if(result==null){
+                            Log.d("bell",bellArray.toString()+".");
+                            Log.d("waiter",waiterArray.toString()+".");
+                            String result = new TaskMethod(getString(R.string.real_time_request_php),"rest_id="+HomeActivity.sRest.getRestId()+"&bellData="+bellArray+"&waiterData="+waiterArray,"UTF-8").execute().get();
+                            if(result==null||result.equals("/")){
                                 Log.d("result","is null");
                             }else{
+                                String results[] = result.split("/");
                                 Log.d("result",result.toString()+"..");
+                                if(!results[0].isEmpty()){
+                                    JSONArray jsonArray = new JSONArray(results[0]);
+                                    Log.d("jsonArray",jsonArray.toString());
+                                    for(int i=0;i<jsonArray.length();i++){
+                                        if(jsonArray.get(i) != null){
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            if(jsonObject!=null){
+                                                for(int j=0;j<3;j++){
+                                                    String mac = jsonObject.getString("bell_id");
+                                                    String status = jsonObject.getString("status");
+                                                    if(mBellMac.get(j).toString().equals(mac)&&!(mBellStatus.get(j).equals(status))){
+                                                        mBellStatus.add(j,status);
+                                                        items.get(j).setStatus(status);
+                                                        mAdapter.notifyItemChanged(j);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    Log.d("result",result.toString()+"..");
+                                }
+
+                                if(!results[1].isEmpty()||results.length==1){
+                                    JSONArray jsonArray = new JSONArray(results[1]);
+                                    Log.d("jsonArray",jsonArray.toString());
+                                    for(int i=0;i<jsonArray.length();i++){
+                                        if(jsonArray.get(i) != null){
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            if(jsonObject!=null){
+
+                                                for(int j=3;j<6;j++){
+                                                    String mac = jsonObject.getString("wristband_id");
+                                                    String delayedSec = jsonObject.getString("delayed_sec");
+                                                    String status = "Ready";
+                                                    if (delayedSec.equals("-1")){
+                                                        status = "Serving";
+                                                    }
+                                                    if(mBellMac.get(j).equals(mac)&&!(mBellStatus.equals(status))){
+                                                        mBellStatus.add(j,status);
+                                                        items.get(j).setStatus(status);
+                                                        mAdapter.notifyItemChanged(j);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
                             }
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } catch (ExecutionException e) {
@@ -269,9 +336,11 @@ public class WristBandFragment extends Fragment {
                         } catch (Exception e){
                             e.printStackTrace();
                         }
+
                 }
 
             }
+
         }).start();
 
     }

@@ -48,7 +48,7 @@ public class RealTimeAdapter extends RecyclerView.Adapter<RealTimeAdapter.ViewHo
         holder.realTimeName.setText(mItems.get(position).getName());
         holder.realTimeStatus.setText(mItems.get(position).getStatus());
 
-       // setAnimation(holder.realTimeImage, position);
+        setAnimation(holder.realTimeImage, position);
     }
 
     // // 필수로 Generate 되어야 하는 메소드 3
@@ -70,16 +70,14 @@ public class RealTimeAdapter extends RecyclerView.Adapter<RealTimeAdapter.ViewHo
             realTimeStatus = (TextView) view.findViewById(R.id.realTimeStatus);
         }
     }
-/*
+
+
     private void setAnimation(View viewToAnimate, int position)
     {
-        // 새로 보여지는 뷰라면 애니메이션을 해줍니다
-        if (position > lastPosition)
-        {
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
-    }*/
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.shake_error);
+        //viewToAnimate.startAnimation(animation);
+        lastPosition = position;
+
+    }
 
 }

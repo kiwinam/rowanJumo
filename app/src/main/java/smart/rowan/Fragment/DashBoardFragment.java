@@ -50,7 +50,6 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
     private MethodClass methodClass;
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     FragmentDashboardBinding mDashboardBinding;
-    HashMap<String, Integer> peakTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,10 +76,8 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
         }
         String pkg = getActivity().getPackageName();
         ArrayList<String> peakTime = new ArrayList<>();
-        ArrayList<Integer> countCall = new ArrayList<>();
         ArrayList<String> tableNum = new ArrayList<>();
         ArrayList<Integer> tableCount = new ArrayList<>();
-
         int i;
         try {
             mRestId = HomeActivity.sRest.getRestId();
@@ -92,7 +89,6 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
             TreeMap<String, Integer> topTime = new TreeMap<>(Collections.reverseOrder());
             if (results[0].equals("null") || results[1].equals("null")) {
                 Toast.makeText(getActivity(), "No data on " + getSelectedDatesString(), Toast.LENGTH_SHORT).show();
-                //Snackbar.make(getActivity().findViewById(R.id.bottom_menu_snack), getSelectedDatesString()+"일의 데이터가 부족합니다.", Snackbar.LENGTH_SHORT).show();
             } else {
                 JSONArray delayedTimeArray = new JSONArray(results[0]);
                 JSONArray peakTimeArray = new JSONArray(results[1]);
@@ -114,10 +110,6 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
                     String[] splitTime = fullTime.split(" ");
                     Log.d("splitTime", splitTime[1].replace(":", ""));
                     int rangeTime = Integer.parseInt(splitTime[1].replace(":", ""));
-                    //countCall.add(Integer.parseInt(jsonObject.getString("number_of_calls")));//table_number , table_served_count
-                    //int pickTimeId = getResources().getIdentifier("dashPickTimeTv" + (i + 1), "id", pkg);
-                    //int countCallId = getResources().getIdentifier("dashPickTimeCountTv" + (i + 1), "id", pkg);
-                    //methodClass.setPeakTimeText((TextView) getActivity().findViewById(pickTimeId), peakTime.get(i), (TextView) getActivity().findViewById(countCallId), countCall.get(i));
                     if (0 <= rangeTime && rangeTime < 10000) {
                         count[0] += 1;
                         peakTimes.put("00",count[0]);
@@ -191,7 +183,6 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
                         count[23] += 1;
                         peakTimes.put("23",count[23]);
                     }
-                    //pieEntries.add(new Entry(countCall.get(i), i));
                 }
 
                 for (int c = 0; c < count.length; c++) {
@@ -207,7 +198,6 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
                     }
                     String temp = (String) it.next();
                     topTime.put(temp, peakTimes.get(temp));
-
                 }
                 Iterator<String> treeMapReverseIter = topTime.keySet().iterator();
                 int countss = 0;
@@ -220,13 +210,11 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
                     methodClass.setPeakTimeText((TextView) getActivity().findViewById(pickTimeId), key, (TextView) getActivity().findViewById(countCallId), value);
 
                 }
-
                 for (int j = i; j < 5; j++) {
                     int pickTimeId = getResources().getIdentifier("dashPickTimeTv" + (j + 1), "id", pkg);
                     int countCallId = getResources().getIdentifier("dashPickTimeCountTv" + (j + 1), "id", pkg);
                     methodClass.initPeakTimeText((TextView) getActivity().findViewById(pickTimeId), (TextView) getActivity().findViewById(countCallId));
                 }
-
             }
             String sec = time + "sec";
             mDashboardBinding.dashAverageTime.setText(sec);
@@ -239,10 +227,10 @@ public class DashBoardFragment extends Fragment implements OnDateSelectedListene
             lineDataSet.setDrawFilled(true); //선아래로 색상표시
             lineDataSet.setDrawValues(false);
             LineData thePieData = new LineData(labels, lineDataSet);
-            //mDashboardBinding.lineChart.setData(thePieData);
-            //mDashboardBinding.lineChart.animateX(1000);
-            //mDashboardBinding.lineChart.setDescriptionTextSize(30);
-            //mDashboardBinding.lineChart.setDescription(getSelectedDatesString());
+            mDashboardBinding.lineChart.setData(thePieData);
+            mDashboardBinding.lineChart.animateX(1000);
+            mDashboardBinding.lineChart.setDescriptionTextSize(30);
+            mDashboardBinding.lineChart.setDescription(getSelectedDatesString());
 
         } catch (Exception e) {
             e.printStackTrace();

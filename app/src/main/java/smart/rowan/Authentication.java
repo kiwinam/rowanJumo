@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -27,7 +28,6 @@ public class Authentication extends AsyncTask<String, Void, String> {
     private Context context;
     private Activity activity;
     private ProgressDialog progressBar;
-    private StringBuilder stringBuilder;
 
     Authentication(Context ctx, Activity activity) {
         this.context = ctx;
@@ -100,8 +100,11 @@ public class Authentication extends AsyncTask<String, Void, String> {
                 String password = param[4];
 
                 String link = activity.getString(R.string.register);
-                String data = "fname=" + first_name +"&lname=" + last_name +
-                        "&email=" + email + "&pass=" + password + "date=" + registered_date;
+                String data = URLEncoder.encode("fname","UTF-8")+ "=" + URLEncoder.encode(first_name,"UTF-8") +
+                        "&"+ URLEncoder.encode("lname","UTF-8")+ "=" + URLEncoder.encode(last_name,"UTF-8") +
+                        "&"+ URLEncoder.encode("email","UTF-8")+ "=" + URLEncoder.encode(email,"UTF-8") +
+                        "&"+ URLEncoder.encode("pass","UTF-8")+ "=" + URLEncoder.encode(password,"UTF-8") +
+                        "&"+ URLEncoder.encode("date","UTF-8")+ "=" + URLEncoder.encode(registered_date,"UTF-8");
 
                 URL url = new URL(link);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -132,7 +135,6 @@ public class Authentication extends AsyncTask<String, Void, String> {
                 }
                 return sb.toString();
             } catch (Exception e) {
-                Toast.makeText(context, "Occurred temporary Error!", Toast.LENGTH_SHORT).show();
             }
         }
         return null;
@@ -187,6 +189,7 @@ public class Authentication extends AsyncTask<String, Void, String> {
                 progressBar.dismiss();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Toast.makeText(context, "Occurred temporary Error!", Toast.LENGTH_SHORT).show();
         }
     }

@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +62,12 @@ public class EmployeeDashBoardFragment extends Fragment implements OnDateSelecte
                 mEmployeeDashBinding.totalCallsTextView.setText(DID_NOT_WORK);
                 mEmployeeDashBinding.averageTextView.setText(DID_NOT_WORK);
                 //Snackbar.make(getActivity().findViewById(R.id.bottom_menu_snack),"You didn't work that day",Snackbar.LENGTH_SHORT).show();
-            } else {
+            } else if(result==null){
+                Log.d("result","null");
+            }
+                else {
                 JSONObject jsonResult = new JSONObject(result);
+                Log.d("not null",jsonResult.toString()+",,");
                 mEmployeeDashBinding.hoursTextView.setText(jsonResult.getString("HOURS"));
                 String calls = jsonResult.getString("COUNT") + " calls";
                 mEmployeeDashBinding.totalCallsTextView.setText(calls);
